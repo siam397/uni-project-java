@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.104:3000/")
+                .baseUrl("https://b980e55cff1b.ngrok.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
