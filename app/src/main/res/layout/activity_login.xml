@@ -10,97 +10,81 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="278dp"
-        android:layout_height="47dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="67dp"
-        android:layout_marginRight="67dp"
-        android:layout_marginBottom="426dp"
+        android:layout_marginBottom="420dp"
         android:background="@drawable/shadow_edittext"
         android:ems="10"
         android:hint="@string/email"
+        android:fontFamily="@font/kievitotmedium"
         android:inputType="textEmailAddress"
         android:paddingLeft="20dp" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="278dp"
-        android:layout_height="47dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="67dp"
-        android:layout_marginRight="67dp"
-        android:layout_marginBottom="354dp"
+        android:layout_marginBottom="350dp"
         android:background="@drawable/shadow_edittext"
         android:ems="10"
         android:hint="@string/password"
+        android:fontFamily="@font/kievitotmedium"
         android:inputType="textPassword"
         android:paddingLeft="20dp" />
 
     <Button
         android:id="@+id/loginbtn"
-        android:layout_width="156dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="127dp"
-        android:layout_marginRight="127dp"
-        android:layout_marginBottom="222dp"
+        android:layout_marginBottom="240dp"
         android:background="@drawable/rounded_edittext"
-        android:fontFamily="@font/kievitotregular"
+        android:fontFamily="@font/kievitotextrabold"
         android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22sp"
-        app:backgroundTint="#AF55FF" />
+        app:backgroundTint="#8720E3" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="170dp"
-        android:layout_marginRight="170dp"
-        android:layout_marginBottom="539dp"
-        android:fontFamily="@font/kievitotbold"
-        android:text="@string/login"
-        android:textColor="@color/black"
-        android:textSize="28sp" />
+        android:layout_marginBottom="530dp"
+        android:fontFamily="@font/kievitotextrabold"
+        android:text="Log in"
+        android:textColor="#363636"
+        android:textSize="35dp" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="166dp"
-        android:layout_marginRight="166dp"
         android:layout_marginBottom="170dp"
         android:fontFamily="@font/kievitotregular"
         android:text="Not a user?"
-        android:textSize="17sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/GoToSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="179dp"
-        android:layout_marginRight="179dp"
-        android:layout_marginBottom="135dp"
-        android:fontFamily="@font/kievitotregular"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="-160dp"
+        android:fontFamily="@font/kievitotmedium"
         android:text="Sign up"
-        android:textColor="#0645AD"
-        android:textSize="17sp" />
+        android:textColor="#AF55FF"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>
