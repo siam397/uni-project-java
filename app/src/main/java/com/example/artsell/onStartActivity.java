@@ -22,6 +22,7 @@ public class onStartActivity extends AppCompatActivity {
             public void run() {
                 SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
                 String userInfo=sharedPreferences.getString("user","");
+                System.out.println(userInfo);
                 if(userInfo.equals("")){
                     Intent intent=new Intent(onStartActivity.this,LoginActivity.class);
                     startActivity(intent);

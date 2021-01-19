@@ -19,8 +19,7 @@
         android:layout_marginLeft="125dp"
         android:layout_marginEnd="128dp"
         android:layout_marginRight="128dp"
-        android:layout_marginBottom="447dp"
-        android:src="@drawable/blankprofilepicture" />
+        android:layout_marginBottom="447dp" />
 
     <TextView
         android:id="@+id/name"
@@ -38,7 +37,7 @@
         android:layout_marginBottom="383dp"
         android:gravity="center_horizontal"
         android:textColor="@color/black"
-        android:text="Chairman Netero"
+
         android:textSize="28sp" />
 
     <TextView
@@ -57,7 +56,7 @@
         android:layout_marginBottom="324dp"
         android:fontFamily="@font/kievitotregular"
         android:gravity="center"
-        android:text="Human potential for evolution is limitless"
+
         android:textSize="20sp" />
 
     <Button
