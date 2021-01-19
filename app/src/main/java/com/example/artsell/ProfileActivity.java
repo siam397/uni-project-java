@@ -32,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button uploadbtn;
     private Button choosebtn;
     private Button takeImage;
+    private final Button logout=findViewById(R.id.logoutbtn);;
     private final int Gallery_REQUEST = 21;
     private final int camera_request=22;
     private String currentImagePath;
@@ -39,6 +40,28 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        String id=sharedPreferences.getString("user","");
 
+
+
+
+
+
+
+
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.clear();
+                editor.putString("user","");
+                Intent intent=new Intent(ProfileActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

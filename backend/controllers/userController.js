@@ -1,8 +1,10 @@
 const User=require("../models/userModels")
+const Profile=require("../models/profileModels")
 const bcrypt=require("bcrypt");
 const { use } = require("../routes/postRoutes");
 
 exports.login=async (req,res)=>{
+    console.log("called")
     const email=req.body.email;
     const password=req.body.password;
     User.findOne({email:email},async (err,user)=>{
@@ -12,6 +14,7 @@ exports.login=async (req,res)=>{
         }else{
             try{
                 if(bcrypt.compare(req.body.password, user.password)){
+                    console.log("logged ins")
                     res.send({
                         username:user.username,
                         email:user.email,
@@ -50,6 +53,14 @@ exports.signup=async (req,res)=>{
                     password:hashedPassword
                 })
                 newUser.save()
+                const newProfile=new Profile({
+                    user_id:newUser._id,
+                    username:newUser.username,
+                    bio:"",
+                    profilePicture:"",
+                    posts:[]
+                })
+                newProfile.save()
                 res.send({
                     username:newUser.username,
                     email:newUser.email,

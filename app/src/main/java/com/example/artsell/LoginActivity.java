@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("https://b980e55cff1b.ngrok.io/")
+                .baseUrl("http://192.168.0.104:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
@@ -76,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<GetUser> call, Response<GetUser> response) {
                         if(!response.isSuccessful()){
-                            System.out.println("hoilo na");
+                            Log.i("TAG", "onResponse:hoy nai ");
                             return;
                         }
                         int statusCode=response.code();

@@ -9,4 +9,6 @@ public interface RestApiPost {
     Call<GetUser> loginUser(@Body LoginUser loginUser);
     @POST("signup")
     Call<GetUser> signupUser(@Body SignUser user);
+    @POST("getProfileInfo")
+    Call<GetProfile> getProfileInfo(@Body UserID userID);
 }
