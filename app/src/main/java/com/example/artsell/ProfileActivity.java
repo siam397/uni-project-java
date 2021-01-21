@@ -41,7 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Button logout=findViewById(R.id.logoutbtn);
+        //Logout commented out
+        //Button logout=findViewById(R.id.logoutbtn);
         imageView=findViewById(R.id.profile_image);
         TextView username=findViewById(R.id.name);
         TextView bio=findViewById(R.id.bio);
@@ -90,17 +91,17 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.clear();
-                editor.putString("user","");
-                editor.apply();
-                Intent intent=new Intent(ProfileActivity.this,LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor=sharedPreferences.edit();
+//                editor.clear();
+//                editor.putString("user","");
+//                editor.apply();
+//                Intent intent=new Intent(ProfileActivity.this,LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 }
