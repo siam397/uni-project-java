@@ -4,71 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".ProfileActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="157dp"
-        android:layout_height="165dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="125dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginRight="128dp"
-        android:layout_marginBottom="447dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="430dp" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginEnd="83dp"
-        android:layout_marginRight="83dp"
-        android:layout_marginBottom="383dp"
+        android:layout_below="@+id/profile_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-390dp"
+        android:textAllCaps="false"
         android:gravity="center_horizontal"
-        android:textColor="@color/black"
-
+        android:fontFamily="@font/kievitotextrabold"
+        android:textColor="#363636"
         android:textSize="28sp" />
 
     <TextView
         android:id="@+id/bio"
-        android:layout_width="255dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
-        android:layout_marginEnd="79dp"
-        android:layout_marginRight="79dp"
-        android:layout_marginBottom="324dp"
-        android:fontFamily="@font/kievitotregular"
+        android:layout_below="@+id/name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textAllCaps="false"
         android:gravity="center"
-
-        android:textSize="20sp" />
+        android:fontFamily="@font/kievitotitalic"
+        android:textColor="#363636"
+        android:textSize="22sp" />
 
     <Button
-        android:id="@+id/logoutbtn"
+        android:id="@+id/editbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="160dp"
-        android:layout_marginRight="160dp"
-        android:layout_marginBottom="183dp"
-        android:text="Logout" />
+        android:layout_alignBottom="@+id/bio"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-130dp"
+        android:background="@drawable/rounded_edittext"
+        android:fontFamily="@font/kievitotbold"
+        android:text="Edit"
+        android:textAllCaps="false"
+        android:textColor="#F5F5F5"
+        android:textSize="20sp"
+        app:backgroundTint="#9E6BCB" />
+
+<!--    <Button-->
+<!--        android:id="@+id/logoutbtn"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_alignBottom="@+id/bio"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginBottom="-130dp"-->
+<!--        android:text="Logout" />-->
 
 </RelativeLayout>
