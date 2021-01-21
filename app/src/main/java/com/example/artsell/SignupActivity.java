@@ -37,7 +37,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.104:3000/")
+                .baseUrl("https://bdd6b55641e4.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
