@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/chat"
+        android:title="Chat"
+        android:icon="@drawable/chat"
+        app:cnb_backgroundColor="#FF785B"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+    <item
+        android:id="@+id/friends"
+        android:title="Friends"
+        android:icon="@drawable/friends"
+        app:cnb_backgroundColor="#FF785B"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/user2"
+        app:cnb_backgroundColor="#FF785B"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+
+</menu>
