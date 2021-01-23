@@ -13,7 +13,7 @@
         android:background="@drawable/bottomnavbar"
         android:elevation="16dp"
         android:padding="8dp"
-        app:cnb_menuResource=""
+        app:cnb_menuResource="@menu/menu_bottom"
         />
 
 
