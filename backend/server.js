@@ -1,6 +1,9 @@
 const express = require('express')
+const SocketServer=require("websocket").server
+const http=require("http")
 const mongoose=require("mongoose")
 const cors=require("cors")
+const server=http.createServer((req,res)=>{})
 const app = express()
 app.use(cors());
 
@@ -23,6 +26,45 @@ db.once('open', function() {
 app.use(routes);
 
 
+server.listen(4000,()=>{
+  console.log("listening for chat")
+})
+
 app.listen("3000",function(){
     console.log("server started")
 })
+
+
+wsServer=new SocketServer({
+  httpServer:server,
+  maxReceivedFrameSize: 1000000,
+  maxReceivedMessageSize: 10 * 1024 * 1024,
+  autoAcceptConnections: false
+})
+const connections=[]
+const messages=[]
+
+wsServer.on("request",(req)=>{
+  const connection=req.accept()
+  connections.push(connection)
+  connection.on("message",(mes)=>{
+    messages.push(mes)
+    connections.forEach(element=>{
+      console.log(element)
+      messages.forEach(message=>{
+        element.sendUTF(message.utf8Data)
+      })
+      // if(element!=connection){
+      //   element.sendUTF(mes.utf8Data)
+      // }
+    })
+
+    connection.on("close",(resCode,des)=>{
+      console.log(des+"     "+resCode)
+      connections.splice(connections.indexOf(connection),1)
+    })
+  })
+})
+
+
+

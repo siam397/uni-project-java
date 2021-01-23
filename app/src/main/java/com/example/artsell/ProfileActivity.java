@@ -83,8 +83,14 @@ public class ProfileActivity extends AppCompatActivity {
                 System.out.println(t.getMessage());
             }
         });
-
-
+        Button btn=findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ProfileActivity.this,ChatActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
