@@ -13,6 +13,7 @@
         android:background="@drawable/bottomnavbar"
         android:elevation="16dp"
         android:padding="8dp"
+        android:fontFamily="@font/kievitotbold"
         app:cnb_menuResource="@menu/menu_bottom"
         />
 
