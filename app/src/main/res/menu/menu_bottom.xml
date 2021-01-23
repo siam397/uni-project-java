@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    app:cnb_unselectedColor="#fff"
+    app:cnb_unselectedColor="#363636"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/chat"
         android:title="Chat"
         android:icon="@drawable/ic_chat"
-        app:cnb_backgroundColor="#FF785B"
+        app:cnb_backgroundColor="#8720E3"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         />
@@ -15,7 +15,7 @@
         android:id="@+id/friends"
         android:title="Friends"
         android:icon="@drawable/ic_friends"
-        app:cnb_backgroundColor="#FF785B"
+        app:cnb_backgroundColor="#8720E3"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         />
@@ -23,7 +23,7 @@
         android:id="@+id/profile"
         android:title="Profile"
         android:icon="@drawable/ic_user2"
-        app:cnb_backgroundColor="#FF785B"
+        app:cnb_backgroundColor="#8720E3"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         />
