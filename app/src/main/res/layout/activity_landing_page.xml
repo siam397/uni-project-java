@@ -8,11 +8,12 @@
     
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottomnavbar"
         android:elevation="16dp"
-        android:padding="8dp"
+        android:padding="2dp"
+        android:layout_margin="0dp"
         android:fontFamily="@font/kievitotbold"
         app:cnb_menuResource="@menu/menu_bottom"
         />
