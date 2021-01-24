@@ -11,9 +11,6 @@ app.use(express.json())
 
 const routes=require("./routes/postRoutes");
 
-
-
-
 mongoose.connect("mongodb+srv://pervyshrimp:123@peoplecluster.ydugl.mongodb.net/UniProjectDB",{ useNewUrlParser: true, useUnifiedTopology: true  })
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -23,6 +20,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("connected")
 });
+
 app.use(routes);
 
 
@@ -46,17 +44,18 @@ const messages=[]
 
 wsServer.on("request",(req)=>{
   const connection=req.accept()
+  console.log(messages)
+  messages.forEach(message=>{
+    connection.sendUTF(message)
+  })
   connections.push(connection)
   connection.on("message",(mes)=>{
-    messages.push(mes)
+    messages.push(mes.utf8Data)
+    console.log(mes.utf8Data)
     connections.forEach(element=>{
-      console.log(element)
-      messages.forEach(message=>{
-        element.sendUTF(message.utf8Data)
-      })
-      // if(element!=connection){
-      //   element.sendUTF(mes.utf8Data)
-      // }
+      if(element!=connection){
+        element.sendUTF(mes.utf8Data)
+      }
     })
 
     connection.on("close",(resCode,des)=>{

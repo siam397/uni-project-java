@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -113,8 +114,12 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
             runOnUiThread(()->{
                 try{
                     JSONObject jsonObject=new JSONObject(text);
-                    System.out.println("message i get" + text);
-                    jsonObject.put("isSent",false);
+                    Log.w("TAG", "onMessage: "+jsonObject.getString("name"));
+                    if(jsonObject.getString("name").equals(name)){
+                        jsonObject.put("isSent",true);
+                    }else{
+                        jsonObject.put("isSent",false);
+                    }
                     messageAdapter.addItem(jsonObject);
                     recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
                 }catch (Exception e){
@@ -167,7 +172,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
                     recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
 
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         });
@@ -183,7 +188,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
 
                     sendImage(image);
                 }catch(Exception e){
-
+                    e.printStackTrace();
                 }
             }
         }
