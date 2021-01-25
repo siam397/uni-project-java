@@ -21,6 +21,15 @@ public class LandingPageActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNavbar);
 
+        if (savedInstanceState == null) {
+            bottomNav.setItemSelected(R.id.chat, true);
+            fragmentManager = getSupportFragmentManager();
+            ChatFragment chatFragment = new ChatFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, chatFragment)
+                    .commit();
+        }
+
         bottomNav.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int id) {
