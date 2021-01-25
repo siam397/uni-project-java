@@ -5,8 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LandingPageActivity">
-    
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
@@ -14,7 +21,6 @@
         android:elevation="16dp"
         android:padding="2dp"
         android:layout_margin="0dp"
-        android:fontFamily="@font/kievitotbold"
         app:cnb_menuResource="@menu/menu_bottom"
         />
 
