@@ -18,9 +18,11 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottomnavbar"
-        android:elevation="16dp"
+        android:elevation="8dp"
         android:padding="2dp"
         android:layout_margin="0dp"
+        app:cnb_radius="8dp"
+        app:cnb_orientationMode="horizontal"
         app:cnb_menuResource="@menu/menu_bottom"
         />
 
