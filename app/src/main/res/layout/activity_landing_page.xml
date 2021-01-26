@@ -10,8 +10,19 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
+    </FrameLayout>
 
+<!--    Action Bar-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#F6F6F6"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+<!--    Bottom Nav Bar-->
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"
@@ -22,6 +33,7 @@
         android:padding="2dp"
         android:layout_margin="0dp"
         app:cnb_radius="8dp"
+        app:cnb_iconSize="28dp"
         app:cnb_orientationMode="horizontal"
         app:cnb_menuResource="@menu/menu_bottom"
         />

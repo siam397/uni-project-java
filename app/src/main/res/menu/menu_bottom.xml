@@ -7,25 +7,25 @@
         android:id="@+id/chat"
         android:title=" Chat"
         android:icon="@drawable/ic_chat"
-        app:cnb_backgroundColor="#8720E3"
-        app:cnb_iconColor="#fff"
-        app:cnb_textColor="#fff"
+        app:cnb_backgroundColor="#F4FA3A"
+        app:cnb_iconColor="#363636"
+        app:cnb_textColor="#363636"
         />
     <item
         android:id="@+id/friends"
         android:title="Friends"
-        android:icon="@drawable/ic_friends"
-        app:cnb_backgroundColor="#8720E3"
-        app:cnb_iconColor="#fff"
-        app:cnb_textColor="#fff"
+        android:icon="@drawable/ic_friends__1_"
+        app:cnb_backgroundColor="#F4FA3A"
+        app:cnb_iconColor="#363636"
+        app:cnb_textColor="#363636"
         />
     <item
         android:id="@+id/profile"
         android:title="Profile"
-        android:icon="@drawable/ic_user2"
-        app:cnb_backgroundColor="#8720E3"
-        app:cnb_iconColor="#fff"
-        app:cnb_textColor="#fff"
+        android:icon="@drawable/ic_user"
+        app:cnb_backgroundColor="#F4FA3A"
+        app:cnb_iconColor="#363636"
+        app:cnb_textColor="#363636"
         />
 
 </menu>
