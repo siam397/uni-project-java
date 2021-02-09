@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ArtSell</string>
+    <string name="app_name">Naam thik nai</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -7,4 +7,5 @@
     <string name="signup">Sign Up</string>
     <string name="privacyandpolicy1">By pressing "Sign Up", you agree to our</string>
     <string name="privacyamdpolicy2">terms and conditions</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
