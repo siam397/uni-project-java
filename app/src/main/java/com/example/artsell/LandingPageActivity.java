@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -18,6 +19,9 @@ public class LandingPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+
+        //Appbar Font Color
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + getString(R.string.app_name) + "</font>"));
 
         bottomNav = findViewById(R.id.bottomNavbar);
 
