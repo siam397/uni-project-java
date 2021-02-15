@@ -1,18 +1,38 @@
 package com.example.artsell;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.artsell.models.GetFriends;
+import com.example.artsell.models.Profile;
+import com.example.artsell.models.UserID;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class FriendsFragment extends Fragment {
@@ -53,38 +73,76 @@ public class FriendsFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        // F R E N S
-        listFriend = new ArrayList<>();
-
-        listFriend.add(new Profile("1", "Noman", "Shera", R.drawable.dp1));
-        listFriend.add(new Profile("2", "Mamun", "Not shera", R.drawable.dp2));
-        listFriend.add(new Profile("3", "Kalam", "Don't hurt me man", R.drawable.dp3));
-        listFriend.add(new Profile("4", "Dr Strange", "wot", R.drawable.dp4));
-        listFriend.add(new Profile("5", "Rahim Rahman", "no", R.drawable.dp5));
-        listFriend.add(new Profile("6", "Karim Kahman", "dekhi", R.drawable.dp6));
-        listFriend.add(new Profile("7", "Boring", "wut", R.drawable.dp7));
-        listFriend.add(new Profile("8", "DJ", "hm", R.drawable.dp8));
-        listFriend.add(new Profile("9", "RJ", "hmm", R.drawable.dp9));
-        listFriend.add(new Profile("10", "CJ", "gta", R.drawable.dp10));
-        listFriend.add(new Profile("11", "Bro fist", "pewpew", R.drawable.dp11));
-        // F R E N S
+    public void setListFriend(List<Profile> listFriend) {
+        this.listFriend = listFriend;
     }
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+//        }
+//
+//        View dialog=(Dialog)
+//
+//
+//        // F R E N S
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_friends, container, false);
-        myRecyclerView = (RecyclerView) v.findViewById(R.id.friends_recyclerview);
-        FriendsRecyclerViewAdapter recyclerViewAdapter = new FriendsRecyclerViewAdapter(getContext(),listFriend);
-        myRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
-        myRecyclerView.setAdapter(recyclerViewAdapter);
+
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        System.out.println("dhukse");
+        myRecyclerView = (RecyclerView) v.findViewById(R.id.friends_recyclerview);
+        myRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
+
+        SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        String id=sharedPreferences.getString("user","");
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("http://192.168.0.104:3000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+        UserID userID=new UserID(id);
+        Call<GetFriends> call=restApiPost.getFriends(userID);
+        call.enqueue(new Callback<GetFriends>() {
+            @Override
+            public void onResponse(@NotNull Call<GetFriends> call, @NotNull Response<GetFriends> response) {
+                if(!response.isSuccessful()){
+                    Log.i("TAG", "onResponse:hoy nai ");
+                    return;
+                }
+                GetFriends getFriends=response.body();
+
+
+                System.out.println("response "+ response);
+                myRecyclerView.setAdapter(new FriendsRecyclerViewAdapter(getActivity(),response.body().getFriends()));
+
+
+
+                if(getFriends==null){
+                    System.out.println("friend nai");
+                }else {
+                    assert response.body() != null;
+
+
+
+                }
+            }
+            @Override
+            public void onFailure(@NotNull Call<GetFriends> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+
+        });
     }
 }

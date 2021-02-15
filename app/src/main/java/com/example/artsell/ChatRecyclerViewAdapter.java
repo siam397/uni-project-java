@@ -10,12 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.artsell.models.Profile;
+
 import java.util.List;
 
 public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerViewAdapter.AnotherViewHolder> {
 
     Context mContext;
     List<Profile> mData;
+
 
     public ChatRecyclerViewAdapter(Context nContext, List<Profile> nData) {
         this.mContext = nContext;
@@ -35,7 +38,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
 
         holder.tv_name.setText(mData.get(position).getUsername());
-        holder.img.setImageResource(mData.get(position).getProfilePicture());
+//        holder.img.setImageResource(mData.get(position).getProfilePicture());
     }
 
     @Override

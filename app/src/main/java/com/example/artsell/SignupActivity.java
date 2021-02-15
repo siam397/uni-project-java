@@ -6,14 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.artsell.models.GetUser;
+import com.example.artsell.models.SignUser;
+
+import org.conscrypt.Conscrypt;
 
 import java.io.IOException;
+import java.security.Security;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +30,7 @@ public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         Button signupbtn=findViewById(R.id.signupbtn);
@@ -37,13 +43,14 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("https://bdd6b55641e4.ngrok.io")
+                .baseUrl("http://192.168.0.104:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         signupbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("TAG1", "onClick: ");
                 EditText email=findViewById(R.id.email);
                 EditText username=findViewById(R.id.username);
                 EditText password=findViewById(R.id.password);
@@ -66,10 +73,12 @@ public class SignupActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.clear();
+                        Log.i("TAG", "onResponse: hoise");
+                        assert response.body() != null;
                         editor.putString("user",response.body().get_Id().toString());
                         editor.apply();
                         System.out.println(sharedPreferences.getString("user","notFound"));
-                        Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+                        Intent intent=new Intent(getApplicationContext(),LandingPageActivity.class);
                         startActivity(intent);
                     }
 

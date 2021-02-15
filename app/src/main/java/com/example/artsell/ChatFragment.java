@@ -3,13 +3,14 @@ package com.example.artsell;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.artsell.models.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,17 +68,17 @@ public class ChatFragment extends Fragment {
         // F R E N S
         listFriend = new ArrayList<>();
 
-        listFriend.add(new Profile("1", "Noman", "Shera", R.drawable.dp1));
-        listFriend.add(new Profile("2", "Mamun", "Not shera", R.drawable.dp2));
-        listFriend.add(new Profile("3", "Kalam", "Don't hurt me man", R.drawable.dp3));
-        listFriend.add(new Profile("4", "Dr Strange", "wot", R.drawable.dp4));
-        listFriend.add(new Profile("5", "Rahim Rahman", "no", R.drawable.dp5));
-        listFriend.add(new Profile("6", "Karim Kahman", "dekhi", R.drawable.dp6));
-        listFriend.add(new Profile("7", "Boring", "wut", R.drawable.dp7));
-        listFriend.add(new Profile("8", "DJ", "hm", R.drawable.dp8));
-        listFriend.add(new Profile("9", "RJ", "hmm", R.drawable.dp9));
-        listFriend.add(new Profile("10", "CJ", "gta", R.drawable.dp10));
-        listFriend.add(new Profile("11", "Bro fist", "pewpew", R.drawable.dp11));
+//        listFriend.add(new Profile("1", "Noman", "Shera", R.drawable.dp1));
+//        listFriend.add(new Profile("2", "Mamun", "Not shera", R.drawable.dp2));
+//        listFriend.add(new Profile("3", "Kalam", "Don't hurt me man", R.drawable.dp3));
+//        listFriend.add(new Profile("4", "Dr Strange", "wot", R.drawable.dp4));
+//        listFriend.add(new Profile("5", "Rahim Rahman", "no", R.drawable.dp5));
+//        listFriend.add(new Profile("6", "Karim Kahman", "dekhi", R.drawable.dp6));
+//        listFriend.add(new Profile("7", "Boring", "wut", R.drawable.dp7));
+//        listFriend.add(new Profile("8", "DJ", "hm", R.drawable.dp8));
+//        listFriend.add(new Profile("9", "RJ", "hmm", R.drawable.dp9));
+//        listFriend.add(new Profile("10", "CJ", "gta", R.drawable.dp10));
+//        listFriend.add(new Profile("11", "Bro fist", "pewpew", R.drawable.dp11));
         // F R E N S
     }
 

@@ -27,7 +27,7 @@ public class onStartActivity extends AppCompatActivity {
                     Intent intent=new Intent(onStartActivity.this,LoginActivity.class);
                     startActivity(intent);
                 }else{
-                    Intent intent=new Intent(onStartActivity.this,ProfileActivity.class);
+                    Intent intent=new Intent(onStartActivity.this,LandingPageActivity.class);
                     startActivity(intent);
                 }
 

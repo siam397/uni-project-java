@@ -6,4 +6,5 @@ const router=express.Router();
 router.post("/login",userController.login);
 router.post("/signup",userController.signup);
 router.post("/getProfileInfo",profileController.getProfileInfo)
+router.post("/getFriends",profileController.getFriends)
 module.exports=router;

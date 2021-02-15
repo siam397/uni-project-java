@@ -15,4 +15,17 @@
         android:textColor="#fff"
         android:text="Profile" />
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="170dp"
+        android:onClick="onClick"
+        android:text="Button" />
+
 </RelativeLayout>
+
+

@@ -1,16 +1,16 @@
-package com.example.artsell;
+package com.example.artsell.models;
 
 public class Profile {
     private String user_id;
     private String username;
     private String bio;
-    private int profilePicture;
+    private String profilePicture;
 //    private String[] posts;
 
     public Profile(){ }
 
     //C O N S T R U C T O R
-    public Profile(String user_id, String username, String bio, int profilePicture/*, String[] posts*/) {
+    public Profile(String user_id, String username, String bio, String profilePicture/*, String[] posts*/) {
         this.user_id = user_id;
         this.username = username;
         this.bio = bio;
@@ -33,7 +33,7 @@ public class Profile {
         return bio;
     }
 
-    public int getProfilePicture() {
+    public String getProfilePicture() {
         return profilePicture;
     }
 
@@ -56,7 +56,7 @@ public class Profile {
         this.bio = bio;
     }
 
-    public void setProfilePicture(int profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 
