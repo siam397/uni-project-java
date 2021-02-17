@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -101,6 +102,10 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(1160, TimeUnit.SECONDS)
+                .connectTimeout(1160, TimeUnit.SECONDS)
+                .build();
         System.out.println("dhukse");
         myRecyclerView = (RecyclerView) v.findViewById(R.id.friends_recyclerview);
         myRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));

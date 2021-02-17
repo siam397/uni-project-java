@@ -1,4 +1,5 @@
 const express = require('express')
+const WebSocket=require('ws')
 const SocketServer=require("websocket").server
 const http=require("http")
 const mongoose=require("mongoose")
@@ -32,38 +33,54 @@ app.listen("3000",function(){
     console.log("server started")
 })
 
+// wsServer=new SocketServer({
+//   httpServer:server,
+//   maxReceivedFrameSize: 1000000,
+//   maxReceivedMessageSize: 10 * 1024 * 1024,
+//   autoAcceptConnections: false
+// })
+// const connections=[]
+// const messages=[]
 
-wsServer=new SocketServer({
-  httpServer:server,
-  maxReceivedFrameSize: 1000000,
-  maxReceivedMessageSize: 10 * 1024 * 1024,
-  autoAcceptConnections: false
-})
-const connections=[]
+// wsServer.on("request",(req)=>{
+//   const connection=req.accept()
+//   console.log(messages)
+//   messages.forEach(message=>{
+//     connection.sendUTF(message)
+//   })
+//   connections.push(connection)
+//   connection.on("message",(mes)=>{
+//     messages.push(mes.utf8Data)
+//     console.log(mes.utf8Data)
+//     connections.forEach(element=>{
+//       console.log(element);
+//       if(element!=connection){
+//         element.sendUTF(mes.utf8Data)
+//       }
+
+//     })
+
+//     connection.on("close",(resCode,des)=>{
+//       console.log(des+"     "+resCode)
+//       connections.splice(connections.indexOf(connection),1)
+//     })
+//   })
+// })
+
 const messages=[]
+const wss = new WebSocket.Server({ port: 4000 });
 
-wsServer.on("request",(req)=>{
-  const connection=req.accept()
-  console.log(messages)
+wss.on('connection', function connection(ws) {
   messages.forEach(message=>{
-    connection.sendUTF(message)
+    ws.send(message)
   })
-  connections.push(connection)
-  connection.on("message",(mes)=>{
-    messages.push(mes.utf8Data)
-    console.log(mes.utf8Data)
-    connections.forEach(element=>{
-      if(element!=connection){
-        element.sendUTF(mes.utf8Data)
-      }
-    })
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    messages.push(message)
+  });
 
-    connection.on("close",(resCode,des)=>{
-      console.log(des+"     "+resCode)
-      connections.splice(connections.indexOf(connection),1)
-    })
-  })
-})
+  ws.send('something');
+});
 
 
 

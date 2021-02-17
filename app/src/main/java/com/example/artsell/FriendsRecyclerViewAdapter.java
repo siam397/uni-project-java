@@ -2,6 +2,7 @@ package com.example.artsell;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -61,7 +62,10 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //this is where i add chat shit
+                        Intent intent=new Intent(mContext,ChatRoomActivity.class);
+                        intent.putExtra("id",mData.get(vHolder.getAdapterPosition()).getUser_id());
+                        intent.putExtra("username",mData.get(vHolder.getAdapterPosition()).getUsername());
+                        mContext.startActivity(intent);
                     }
                 });
 //                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();

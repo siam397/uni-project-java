@@ -9,8 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/editmessage"/>
+        android:layout_height="588dp"
+        android:layout_above="@id/editmessage" />
 
     <EditText
         android:id="@+id/editmessage"
@@ -53,5 +53,33 @@
         android:layout_marginRight="14dp"
         android:layout_marginBottom="28dp"
         android:text="Send" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="59dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="351dp"
+        android:layout_marginBottom="677dp"
+        android:src="@drawable/stalin"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="4dp" />
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="79dp"
+        android:layout_height="51dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="66dp"
+        android:layout_marginEnd="265dp"
+        android:layout_marginBottom="676dp"
+        android:fontFamily="@font/kievitotextrabold"
+        android:gravity="center_vertical"
+        android:text="sex"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
 
 </RelativeLayout>

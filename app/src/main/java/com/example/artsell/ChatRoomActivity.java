@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -38,13 +39,15 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
+public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     private String name;
     private WebSocket webSocket;
-    private String SERVER_PATH="http://192.168.0.104:4000";
+    private String SERVER_PATH="http://192.168.0.104:4000/";
     private EditText messageEdit;
+    private TextView textView;
     private RecyclerView recyclerView;
     private Button sendbtn;
+    private String friendId;
     private ImageView pickimage;
     private final int GALLERY_REQUEST=1;
     private final int camera_request=2;
@@ -52,8 +55,14 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        friendId=getIntent().getStringExtra("id");
         setContentView(R.layout.activity_chat_room);
-        name=getIntent().getStringExtra("name");
+        textView=findViewById(R.id.friend_name);
+        name=getIntent().getStringExtra("username");
+        System.out.println("this is name"+name);
+        textView.setText(name);
+        //needs to change
+        name=getIntent().getStringExtra("username");
         initiateSocketConnection();
     }
 
@@ -130,6 +139,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
     }
 
     private void initializeView() {
+
         messageEdit=findViewById(R.id.editmessage);
         sendbtn=findViewById(R.id.sendButton);
         pickimage=findViewById(R.id.sendImage);
@@ -157,23 +167,20 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher {
             }
         });
 
-        pickimage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                    if (ActivityCompat.checkSelfPermission(ChatRoomActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(ChatRoomActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, GALLERY_REQUEST);
-                    }
-                    System.out.println("hello");
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(intent, GALLERY_REQUEST);
-                    recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
-
-                }catch (Exception e){
-                    e.printStackTrace();
+        pickimage.setOnClickListener(v -> {
+            try{
+                if (ActivityCompat.checkSelfPermission(ChatRoomActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(ChatRoomActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, GALLERY_REQUEST);
                 }
+                System.out.println("hello");
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, GALLERY_REQUEST);
+                recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
         });
 
