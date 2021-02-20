@@ -47,14 +47,21 @@ wsServer.on("request",(req)=>{
   var url=req.resourceURL.pathname
   url=url.replace("/","")
   const splittedurl=url.split(",")
-  const connection=req.accept()
+  const connection={
+    connect:req.accept(),
+    ids:splittedurl
+  }
+  
   var found=false;
   var messages={
     url:splittedurl,
     message:[]
   }
   for(let i=0;i<allmessages.length;i++){
-    if(( allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] ) || (allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1])  ){
+    var condition1=allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] 
+    var condition2=allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1]
+    var sendto=condition1 || condition2 
+    if(sendto){
       messages=allmessages[i];
       found=true;
       break;
@@ -63,26 +70,32 @@ wsServer.on("request",(req)=>{
   if(!found) allmessages.push(messages)
   console.log(messages)
   messages.message.forEach(mess=>{
-    connection.sendUTF(mess)
+    connection.connect.sendUTF(mess)
   })
   connections.push(connection)
-  connection.on("message",(mes)=>{
+  connection.connect.on("message",(mes)=>{
     messages.message.push(mes.utf8Data)
     console.log(mes.utf8Data)
     connections.forEach(element=>{
-      if(element!=connection){
-        element.sendUTF(mes.utf8Data)
+      if(element.ids[0]==connection.ids[1] && element.ids[1]==connection.ids[0]){
+        element.connect.sendUTF(mes.utf8Data)
       }
     })
+    
+    
+    
     for(let i=0;i<allmessages.length;i++){
       console.log("url comparison" +"this is splitted::" +splittedurl +"::this  is saved :::"+allmessages[i].url)
-      if(( allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] ) || (allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1])  ){
+      var condition1=allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] 
+      var condition2=allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1]
+      var sendto=condition1 || condition2 
+      if(sendto){
         console.log("before"+allmessages[i].message)
         allmessages[i]=messages;
         console.log("after"+allmessages[i].message)
       }
     }
-    connection.on("close",(resCode,des)=>{
+    connection.connect.on("close",(resCode,des)=>{
       console.log(des+"     "+resCode)
       connections.splice(connections.indexOf(connection),1)
     })
