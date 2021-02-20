@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,8 +43,14 @@ import okhttp3.WebSocketListener;
 
 public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     private String name;
+    private String friendname;
     private WebSocket webSocket;
-    private String SERVER_PATH="http://192.168.0.104:4000/";
+    private String SERVER_PATH="";
+
+    public void setSERVER_PATH(String SERVER_PATH) {
+        this.SERVER_PATH = SERVER_PATH;
+    }
+
     private EditText messageEdit;
     private TextView textView;
     private RecyclerView recyclerView;
@@ -61,8 +69,13 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
         textView.setText(name);
+        String baselink="http://192.168.0.104:4000/";
+        SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        String userInfo=sharedPreferences.getString("user","");
+        setSERVER_PATH(baselink+friendId+","+userInfo);
         //needs to change
-        name=getIntent().getStringExtra("username");
+        friendname=getIntent().getStringExtra("username");
+        name=sharedPreferences.getString("username","");
         initiateSocketConnection();
     }
 

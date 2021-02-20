@@ -86,7 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.clear();
-                        editor.putString("user",response.body().get_Id().toString());
+                        editor.putString("user",response.body().get_Id());
+                        editor.putString("username",response.body().getUsername());
                         editor.apply();
                         System.out.println(sharedPreferences.getString("user","notFound"));
                         Intent intent=new Intent(getApplicationContext(),LandingPageActivity.class);

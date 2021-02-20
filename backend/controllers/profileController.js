@@ -15,7 +15,7 @@ exports.getProfileInfo=(req,res)=>{
                 profilePicture:profileInfo.profilePicture,
                 friends:profileInfo.friends
             })
-            console.log(profileInfo.profilePicture);
+            
         }
     })
 }

@@ -1,5 +1,4 @@
 const express = require('express')
-const WebSocket=require('ws')
 const SocketServer=require("websocket").server
 const http=require("http")
 const mongoose=require("mongoose")
@@ -11,6 +10,7 @@ app.use(cors());
 app.use(express.json())
 
 const routes=require("./routes/postRoutes");
+const Connection=require("./models/connectionModel")
 
 mongoose.connect("mongodb+srv://pervyshrimp:123@peoplecluster.ydugl.mongodb.net/UniProjectDB",{ useNewUrlParser: true, useUnifiedTopology: true  })
 mongoose.set('useNewUrlParser', true);
@@ -25,62 +25,221 @@ db.once('open', function() {
 app.use(routes);
 
 
-// server.listen(4000,()=>{
-//   console.log("listening for chat")
-// })
+server.listen(4000,()=>{
+  console.log("listening for chat")
+})
 
 app.listen("3000",function(){
     console.log("server started")
 })
 
-// wsServer=new SocketServer({
-//   httpServer:server,
-//   maxReceivedFrameSize: 1000000,
-//   maxReceivedMessageSize: 10 * 1024 * 1024,
-//   autoAcceptConnections: false
-// })
-// const connections=[]
-// const messages=[]
+
+wsServer=new SocketServer({
+  httpServer:server,
+  maxReceivedFrameSize: 1000000,
+  maxReceivedMessageSize: 10 * 1024 * 1024,
+  autoAcceptConnections: false
+})
+const connections=[]
+const allmessages=[]
+
+wsServer.on("request",(req)=>{
+  var url=req.resourceURL.pathname
+  url=url.replace("/","")
+  const splittedurl=url.split(",")
+  const connection=req.accept()
+  var found=false;
+  var messages={
+    url:splittedurl,
+    message:[]
+  }
+  for(let i=0;i<allmessages.length;i++){
+    if(( allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] ) || (allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1])  ){
+      messages=allmessages[i];
+      found=true;
+      break;
+    }
+  }
+  if(!found) allmessages.push(messages)
+  console.log(messages)
+  messages.message.forEach(mess=>{
+    connection.sendUTF(mess)
+  })
+  connections.push(connection)
+  connection.on("message",(mes)=>{
+    messages.message.push(mes.utf8Data)
+    console.log(mes.utf8Data)
+    connections.forEach(element=>{
+      if(element!=connection){
+        element.sendUTF(mes.utf8Data)
+      }
+    })
+    for(let i=0;i<allmessages.length;i++){
+      console.log("url comparison" +"this is splitted::" +splittedurl +"::this  is saved :::"+allmessages[i].url)
+      if(( allmessages[i].url[0]===splittedurl[0] &&allmessages[i].url[1]===splittedurl[1] ) || (allmessages[i].url[1]===splittedurl[0] &&allmessages[i].url[0]===splittedurl[1])  ){
+        console.log("before"+allmessages[i].message)
+        allmessages[i]=messages;
+        console.log("after"+allmessages[i].message)
+      }
+    }
+    connection.on("close",(resCode,des)=>{
+      console.log(des+"     "+resCode)
+      connections.splice(connections.indexOf(connection),1)
+    })
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // wsServer.on("request",(req)=>{
-//   const connection=req.accept()
-//   console.log(messages)
-//   messages.forEach(message=>{
-//     connection.sendUTF(message)
+  
+//   var url=req.resourceURL.pathname
+//   url=url.replace("/","")
+//   const splittedurl=url.split(",")
+//   console.log(req);
+//   var connection={
+//     connect:req.accept(),
+//     ids:splittedurl,
+//     messages:[]
+//   }
+//   // console.log(messages)
+//   connection.messages.forEach(message=>{
+//     connection.connect.sendUTF(message)
 //   })
-//   connections.push(connection)
-//   connection.on("message",(mes)=>{
-//     messages.push(mes.utf8Data)
-//     console.log(mes.utf8Data)
+//   // connections.push(connection)
+//   connection.connect.on("message",(mes)=>{
+//     connection.messages.push(mes.utf8Data)
 //     connections.forEach(element=>{
-//       console.log(element);
-//       if(element!=connection){
-//         element.sendUTF(mes.utf8Data)
+//       if(element.ids[0]==connection.ids[1] && element.ids[1]==connection.ids[0]){
+//         console.log("true");
+//           element.connect.sendUTF(mes.utf8Data)
+//           element.messages.push(mes.utf8Data)
+//           connections.push(connection)
+//           for(let i=0;i<connections.length;i++){
+//             if(connections[i].ids[0]==connection.ids[0]  &&  connections[i].ids[1]==connection.ids[1]){
+//               connections[i]=connection;
+//               break;
+//             }
+//           }
+    
+          
 //       }
-
 //     })
+  
 
-//     connection.on("close",(resCode,des)=>{
+//     connection.connect.on("close",(resCode,des)=>{
 //       console.log(des+"     "+resCode)
 //       connections.splice(connections.indexOf(connection),1)
 //     })
 //   })
+  
 // })
 
-const messages=[]
-const wss = new WebSocket.Server({ port: 4000 });
-
-wss.on('connection', function connection(ws) {
-  messages.forEach(message=>{
-    ws.send(message)
-  })
-  ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
-    messages.push(message)
-  });
-
-  ws.send('something');
-});
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log(req);
+  // const connection={
+  //   connect:req.accept(),
+  //   ids:splittedurl,
+  //   messages:[]
+  // }
+// var found=false;
+//   for(let i=0;i<connections.length;i++){
+//     if(connections[i].ids[0]==connections[i].ids[0]  &&  connections[i].ids[1]==connections[i].ids[1]){
+//       found=true;
+//       var connection=connections[i];
+//     }
+//   }
+  
+//   var connection=connections.map(item=>{
+//     if(item.ids[0]==splittedurl[0] && item.ids[1]==splittedurl[1]){
+//       return item
+//     }
+//   })
+
+//   if(!found){
+//     const connection={
+//     connect:req.accept(),
+//     ids:splittedurl,
+//     messages:[]
+//   }
+//     connections.push(connection)
+//   }
+
+//   console.log("found"+found);
+
+//   // console.log(messages)
+//   connection.messages.forEach(message=>{
+//     connection.connect.sendUTF(message)
+//   })
+//   // connections.push(connection)
+//   connection.connect.on("message",(mes)=>{
+//     connection.messages.push(mes.utf8Data)
+//     connections.forEach(element=>{
+//       if(element.ids[0]==connection.ids[1] && element.ids[1]==connection.ids[0]){
+//         console.log("true");
+//           element.connect.sendUTF(mes.utf8Data)
+//           element.messages.push(mes.utf8Data)
+//           connections.push(connection)
+//           for(let i=0;i<connections.length;i++){
+//             if(connections[i].ids[0]==connection.ids[0]  &&  connections[i].ids[1]==connection.ids[1]){
+//               connections[i]=connection;
+//               break;
+//             }
+//           }
+    
+          
+//       }
+//     })
+  
+
+//     connection.connect.on("close",(resCode,des)=>{
+//       console.log(des+"     "+resCode)
+//       connections.splice(connections.indexOf(connection),1)
+//     })
+//   })

@@ -75,7 +75,8 @@ public class SignupActivity extends AppCompatActivity {
                         editor.clear();
                         Log.i("TAG", "onResponse: hoise");
                         assert response.body() != null;
-                        editor.putString("user",response.body().get_Id().toString());
+                        editor.putString("user",response.body().get_Id());
+                        editor.putString("username",response.body().getUsername());
                         editor.apply();
                         System.out.println(sharedPreferences.getString("user","notFound"));
                         Intent intent=new Intent(getApplicationContext(),LandingPageActivity.class);
