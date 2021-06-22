@@ -69,7 +69,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
         textView.setText(name);
-        String baselink="http://192.168.0.104:4000/";
+        String baselink="http://192.168.0.103:4000/";
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String userInfo=sharedPreferences.getString("user","");
         setSERVER_PATH(baselink+friendId+","+userInfo);

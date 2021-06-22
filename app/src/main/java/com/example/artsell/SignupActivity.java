@@ -43,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.104:3000")
+                .baseUrl("http://192.168.0.103:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
