@@ -1,4 +1,4 @@
-package com.example.artsell;
+package com.example.artsell.models;
 import com.google.gson.annotations.SerializedName;
 public class GetUser {
     private String username;

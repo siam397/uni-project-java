@@ -32,6 +32,7 @@ exports.login=async (req,res)=>{
 }
 
 exports.signup=async (req,res)=>{
+    console.log("ashse");
     const email=req.body.email;
     const username=req.body.username;
     const password=req.body.password;
@@ -58,7 +59,7 @@ exports.signup=async (req,res)=>{
                     username:newUser.username,
                     bio:"",
                     profilePicture:"",
-                    posts:[]
+                    friends:[]
                 })
                 newProfile.save()
                 res.send({

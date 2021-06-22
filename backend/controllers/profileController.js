@@ -13,13 +13,26 @@ exports.getProfileInfo=(req,res)=>{
                 username:profileInfo.username,
                 bio:profileInfo.bio,
                 profilePicture:profileInfo.profilePicture,
-                posts:profileInfo.posts
+                friends:profileInfo.friends
+            })
+            
+        }
+    })
+}
+
+exports.getFriends=(req,res)=>{
+    console.log("ashse");
+    const id=req.body.ID;
+    console.log("this is id"+id);
+    Profile.findOne({user_id:id},function(err,profileInfo){
+        
+        if(err){
+            console.log(err)
+        }else{
+            console.log(profileInfo.friends)
+            res.send({
+                friends:profileInfo.friends
             })
         }
     })
 }
-// exports.changeProfilePicture=(req,res)=>{
-//     const image=req.body.dp
-//     const userID=req.body.id;
-//     User.find({})
-// }

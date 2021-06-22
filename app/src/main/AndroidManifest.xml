@@ -18,11 +18,15 @@
         android:theme="@style/Theme.ArtSell"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".onStartActivity"></activity>
+
+
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".ChatActivity"/>
+        <activity android:name=".ChatRoomActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".LandingPageActivity">
+        <activity android:name=".LandingPageActivity"/>
+        <activity android:name=".onStartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

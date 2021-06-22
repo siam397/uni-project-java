@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.artsell.models.Profile;
+
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,13 +31,12 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String id=sharedPreferences.getString("user","");
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.104:3000/")
+                .baseUrl("http://192.168.0.103:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         System.out.println("this is id from profile activity"+id);
-        UserID userID=new UserID(id);
-        Call<Profile>call=restApiPost.getProfileInfo(userID);
+
 //        call.enqueue(new Callback<Profile>() {
 //            @Override
 //            public void onResponse(Call<Profile> call, Response<Profile> response) {
@@ -74,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
+
 //        logout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -87,4 +86,5 @@ public class ProfileActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
 }

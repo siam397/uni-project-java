@@ -2,18 +2,24 @@ package com.example.artsell;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.artsell.models.Profile;
 
 import java.util.List;
 
@@ -39,7 +45,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         myDialog = new Dialog(mContext);
         myDialog.setContentView(R.layout.dialogbox_friend);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        Button btn=myDialog.findViewById(R.id.btn_dialogbox);
         vHolder.item_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,8 +54,20 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
                 ImageView dialog_dp = (ImageView) myDialog.findViewById(R.id.dp_dialogbox);
                 dialog_name.setText(mData.get(vHolder.getAdapterPosition()).getUsername());
                 dialog_bio.setText(mData.get(vHolder.getAdapterPosition()).getBio());
-                dialog_dp.setImageResource(mData.get(vHolder.getAdapterPosition()).getProfilePicture());
+                byte[] image=Base64.decode(mData.get(vHolder.getAdapterPosition()).getProfilePicture(),Base64.DEFAULT);
+                Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
 
+                dialog_dp.setImageBitmap(bitmap);
+                Button btn=myDialog.findViewById(R.id.btn_dialogbox);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(mContext,ChatRoomActivity.class);
+                        intent.putExtra("id",mData.get(vHolder.getAdapterPosition()).getUser_id());
+                        intent.putExtra("username",mData.get(vHolder.getAdapterPosition()).getUsername());
+                        mContext.startActivity(intent);
+                    }
+                });
 //                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
                 myDialog.show();
             }
@@ -61,7 +79,9 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_name.setText(mData.get(position).getUsername());
-        holder.img.setImageResource(mData.get(position).getProfilePicture());
+        byte[] image=Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
+        Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
+        holder.img.setImageBitmap(bitmap);
 
     }
 
@@ -85,4 +105,3 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
         }
     }
 }
-
