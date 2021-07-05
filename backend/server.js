@@ -1,5 +1,6 @@
 const express = require('express')
 const SocketServer=require("websocket").server
+var bodyParser = require('body-parser')
 const http=require("http")
 const mongoose=require("mongoose")
 const cors=require("cors")
@@ -7,8 +8,7 @@ const server=http.createServer((req,res)=>{})
 const app = express()
 app.use(cors());
 
-app.use(express.json())
-
+app.use(bodyParser.json())
 const routes=require("./routes/postRoutes");
 const Connection=require("./models/connectionModel")
 
