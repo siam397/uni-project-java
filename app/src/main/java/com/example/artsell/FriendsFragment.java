@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.example.artsell.models.GetFriends;
 import com.example.artsell.models.Profile;
 import com.example.artsell.models.UserID;
+import com.example.artsell.utilities.Variables;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -112,10 +113,7 @@ public class FriendsFragment extends Fragment {
 
         SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String id=sharedPreferences.getString("user","");
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit=Variables.initializeRetrofit();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         UserID userID=new UserID(id);
         Call<GetFriends> call=restApiPost.getFriends(userID);

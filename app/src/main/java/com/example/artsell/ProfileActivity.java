@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.artsell.models.Profile;
+import com.example.artsell.utilities.Variables;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -30,10 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView bio=findViewById(R.id.bio);
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String id=sharedPreferences.getString("user","");
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:3000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit= Variables.initializeRetrofit();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         System.out.println("this is id from profile activity"+id);
 
