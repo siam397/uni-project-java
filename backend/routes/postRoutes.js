@@ -7,6 +7,7 @@ const router=express.Router();
 router.post("/login",userController.login);
 router.post("/signup",userController.signup);
 router.post("/getProfileInfo",profileController.getProfileInfo)
+router.post("/getRandomUser",profileController.getAnotherUser)
 router.post("/getFriends",friendsController.getFriends)
 router.post('/addFriend',friendsController.acceptRequest)
 router.post('/sendRequest',friendsController.sendRequest)
