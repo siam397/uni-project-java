@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.artsell.models.GetUser;
 import com.example.artsell.models.SignUser;
+import com.example.artsell.utilities.Variables;
 
 import org.conscrypt.Conscrypt;
 
@@ -42,10 +43,7 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit= Variables.initializeRetrofit();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         signupbtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.artsell.models.GetUser;
 import com.example.artsell.models.LoginUser;
+import com.example.artsell.utilities.Variables;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,10 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:3000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit= Variables.initializeRetrofit();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         RestApiGet restApiGet=retrofit.create(RestApiGet.class);
 //        btn.setOnClickListener(new View.OnClickListener() {
