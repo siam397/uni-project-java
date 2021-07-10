@@ -36,7 +36,7 @@ public class SignupActivityTest {
 
     @Test
     public void testSignUp() throws InterruptedException {
-        String[] arr={"bari","mofiz","cj","hornet","ghost","ori","tommy","trevor"};
+        String[] arr={"mofiz","cj","hornet","ghost","ori","tommy","trevor"};
         for (int i=0;i<arr.length;i++){
             onView(withId(R.id.username)).perform(typeText(arr[i]));
             Espresso.closeSoftKeyboard();
