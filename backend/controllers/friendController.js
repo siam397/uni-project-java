@@ -1,4 +1,5 @@
 const Profile=require("../models/profileModels")
+const Friends=require("../models/friendsModel")
 const _=require("lodash")
 exports.getFriends=(req,res)=>{
     console.log("ashse");
@@ -23,18 +24,20 @@ exports.acceptRequest=async (req,res)=>{
     try{
         const firstPerson=await Profile.findOne({user_id:firstId});
         const secondPerson=await Profile.findOne({user_id:secondId});
-        firstPerson.friends.push(secondPerson)
-        secondPerson.friends.push(firstPerson)
-        firstPerson.friendRequests= _.reject(firstPerson.friendRequests,person=>{
+        const firstPersonFriends=await Friends.findOne({user_id:firstId});
+        const secondPersonFriends=await Friends.findOne({user_id:secondId});
+        firstPersonFriends.friends.push(secondPerson)
+        secondPersonFriends.friends.push(firstPerson)
+        firstPersonFriends.friendRequests= _.reject(firstPersonFriends.friendRequests,person=>{
             return person.user_id==secondId;
         })
-        secondPerson.sentFriendRequests = _.reject(secondPerson.sentFriendRequests,person=>{
+        secondPersonFriends.sentFriendRequests = _.reject(secondPersonFriends.sentFriendRequests,person=>{
             return person.user_id==firstId;
         })
-        firstPerson.save();
-        secondPerson.save();
-        console.log(firstPerson.friends);
-        console.log(secondPerson.friends);
+        // firstPerson.save();
+        // secondPerson.save();
+        firstPersonFriends.save();
+        secondPersonFriends.save();
         res.status(201)
     }catch(e){
         console.log(e)
@@ -48,10 +51,12 @@ exports.sendRequest=async (req,res)=>{
     try{
         const firstPerson=await Profile.findOne({user_id:firstId});
         const secondPerson=await Profile.findOne({user_id:secondId});
-        firstPerson.sentFriendRequests.push(secondPerson);
-        secondPerson.friendRequests.push(firstPerson);
-        firstPerson.save();
-        secondPerson.save();
+        const firstPersonFriends=await Friends.findOne({user_id:firstId});
+        const secondPersonFriends=await Friends.findOne({user_id:secondId});
+        firstPersonFriends.sentFriendRequests.push(secondPerson);
+        secondPersonFriends.friendRequests.push(firstPerson);
+        firstPersonFriends.save();
+        secondPersonFriends.save();
         res.status(201)
     }catch(e){
         console.log(e)
@@ -77,28 +82,35 @@ exports.removeFriend=async (req,res)=>{
 
 
 removeFriendRequest=async (firstId,secondId)=>{
-    const firstPerson=await Profile.findOne({user_id:firstId});
-    const secondPerson=await Profile.findOne({user_id:secondId});
-    firstPerson.friendRequests= _.reject(firstPerson.friendRequests,person=>{
+    const firstPersonFriends=await Friends.findOne({user_id:firstId});
+    const secondPersonFriends=await Friends.findOne({user_id:secondId});
+
+    firstPersonFriends.friendRequests = _.reject(firstPersonFriends.friendRequests,person=>{
         return person.user_id==secondId;
     })
-    secondPerson.sentFriendRequests = _.reject(secondPerson.sentFriendRequests,person=>{
+    firstPersonFriends.sentFriendRequests = _.reject(firstPersonFriends.sentFriendRequests,person=>{
+        return person.user_id==secondId;
+    })
+    secondPersonFriends.sentFriendRequests = _.reject(secondPersonFriends.sentFriendRequests,person=>{
         return person.user_id==firstId;
     })
-    firstPerson.save();
-    secondPerson.save();
+    secondPersonFriends.friendRequests = _.reject(secondPersonFriends.friendRequests,person=>{
+        return person.user_id==firstId;
+    })
+    firstPersonFriends.save();
+    secondPersonFriends.save();
 }
 
 
 unfriend = async (firstId,secondId)=>{
-    const firstPerson=await Profile.findOne({user_id:firstId});
-    const secondPerson=await Profile.findOne({user_id:secondId});
-    firstPerson.friends = _.reject(firstPerson.friends,person=>{
+    const firstPersonFriends=await Friends.findOne({user_id:firstId});
+    const secondPersonFriends=await Friends.findOne({user_id:secondId});
+    firstPersonFriends.friends = _.reject(firstPersonFriends.friends,person=>{
         return person.user_id == secondId;
     }) 
-    secondPerson.friends = _.reject(secondPerson.friends,person=>{
+    secondPersonFriends.friends = _.reject(secondPersonFriends.friends,person=>{
         return person.user_id==firstId;
     })
-    firstPerson.save();
-    secondPerson.save();
+    firstPersonFriends.save();
+    secondPersonFriends.save();
 }
