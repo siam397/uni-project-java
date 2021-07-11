@@ -66,7 +66,7 @@ exports.getSuggestedUsers= async (req,res)=>{
     //     list= await bfs(friend.user_id,id);
     //     if(i===user.friends.length)console.log(list)
     // });
-    console.log(list)
+    res.status(504).send(list)
 }
 
 
