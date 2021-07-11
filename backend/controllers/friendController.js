@@ -23,9 +23,14 @@ exports.acceptRequest=async (req,res)=>{
     try{
         const firstPerson=await Profile.findOne({user_id:firstId});
         const secondPerson=await Profile.findOne({user_id:secondId});
-        removeFriendRequest(firstId,secondId);
         firstPerson.friends.push(secondPerson)
         secondPerson.friends.push(firstPerson)
+        firstPerson.friendRequests= _.reject(firstPerson.friendRequests,person=>{
+            return person.user_id==secondId;
+        })
+        secondPerson.sentFriendRequests = _.reject(secondPerson.sentFriendRequests,person=>{
+            return person.user_id==firstId;
+        })
         firstPerson.save();
         secondPerson.save();
         console.log(firstPerson.friends);
