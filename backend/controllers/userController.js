@@ -1,5 +1,6 @@
 const User=require("../models/userModels")
 const Profile=require("../models/profileModels")
+const Friend=require("../models/friendsModel")
 const bcrypt=require("bcrypt");
 const { use } = require("../routes/postRoutes");
 
@@ -62,6 +63,13 @@ exports.signup=async (req,res)=>{
                     friends:[]
                 })
                 newProfile.save()
+                const newFriends=new Friend({
+                    user_id:newUser._id,
+                    friends:[],
+                    friendRequests:[],
+                    sentFriendRequests:[]
+                })
+                newFriends.save();
                 res.send({
                     username:newUser.username,
                     email:newUser.email,
