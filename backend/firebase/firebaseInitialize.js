@@ -1,6 +1,5 @@
 require('dotenv').config()
 const firebase = require('firebase');
-const config=require('../config');
 const firebaseConfig = {
     apiKey: process.env.API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -11,7 +10,6 @@ const firebaseConfig = {
     appId: process.env.APP_ID,
     measurementId: process.env.MEASUREMENT_ID
   };
-  console.log(firebaseConfig)
 const fbdb = firebase.initializeApp(firebaseConfig);
 const db = fbdb.database();
 const ref = db.ref('users');
