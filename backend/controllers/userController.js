@@ -3,7 +3,7 @@ const Profile=require("../models/profileModels")
 const Friend=require("../models/friendsModel")
 const bcrypt=require("bcrypt");
 const { use } = require("../routes/postRoutes");
-
+const firebaseRef = require('../firebase/firebaseInitialize');
 exports.login=async (req,res)=>{
     console.log("called")
     const email=req.body.email;
@@ -55,6 +55,9 @@ exports.signup=async (req,res)=>{
                     password:hashedPassword
                 })
                 newUser.save()
+                const user_id=newUser._id;
+                const usersRef = firebaseRef.child(`${user_id}`);
+                usersRef.set('created')
                 const newProfile=new Profile({
                     user_id:newUser._id,
                     username:newUser.username,
@@ -70,6 +73,7 @@ exports.signup=async (req,res)=>{
                     sentFriendRequests:[]
                 })
                 newFriends.save();
+                
                 res.send({
                     username:newUser.username,
                     email:newUser.email,

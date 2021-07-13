@@ -10,7 +10,6 @@ exports.getProfileInfo=(req,res)=>{
         if(err){
             console.log(err)
         }else{
-            console.log(profileInfo.username)
             res.send({
                 username:profileInfo.username,
                 bio:profileInfo.bio,
