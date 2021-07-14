@@ -1,7 +1,6 @@
 const Profile=require("../models/profileModels")
 const Friends=require("../models/friendsModel")
 const lodash=require('lodash');
-const { result } = require("lodash");
 visited={};
 exports.getProfileInfo=(req,res)=>{
     const id=req.body.ID;
@@ -10,8 +9,7 @@ exports.getProfileInfo=(req,res)=>{
         if(err){
             console.log(err)
         }else{
-            console.log(profileInfo.username)
-            res.send({
+            res.status(201).send({
                 username:profileInfo.username,
                 bio:profileInfo.bio,
                 profilePicture:profileInfo.profilePicture,
@@ -50,62 +48,38 @@ exports.getAnotherUser=async (req,res)=>{
         userInfo["getRequest"]=false;
     }
     
-    res.send(userInfo)
+    res.status(201).send(userInfo)
 }
 
 exports.getSuggestedUsers= async (req,res)=>{
     const id=req.body.id;
     const userFriends = await Friends.findOne({user_id : id});
+    var peopleFriends;
+    const user = await Profile.findOne({user_id : id});
     var list=[];
     let listOfSuggestedPeople=[];
     try{
-        for (const friend of userFriends.friends){
-        
-            list=[...list,...await newBfs(id)]
+        list=[...list,...await bfs(id)]
+        if(list.length===0){
+            for(const people of await Profile.find()){
+                peopleFriends = await Friends.findOne({user_id : people.user_id});
+                if(people.user_id!==id && !friends(userFriends,peopleFriends) && !sentRequest(userFriends,peopleFriends) && !requested(userFriends,peopleFriends)){
+                    list.push(people)
+                }
+            }
+        }else{
+            for(const userId of list){
+                listOfSuggestedPeople.push(await Profile.findOne({user_id:userId}))
+                list=[...listOfSuggestedPeople]
+            }
         }
-        // user.friends.forEach(async friend => {
-        //     i++
-        //     list= await bfs(friend.user_id,id);
-        //     if(i===user.friends.length)console.log(list)
-        // });
-        for(const userId of list){
-            listOfSuggestedPeople.push(await Profile.findOne({user_id:userId}))
-        }
-        res.status(201).send(listOfSuggestedPeople)
+        res.status(201).send(list)
     }catch(e){
         res.status(501).send(e)
     }
 }
 
-
-// bfs=async (friendId,id)=>{
-//     var queue=[friendId]
-//     const mainUser = await Profile.findOne({user_id : id});
-//     result=[]
-//     var currentFriend;
-//     visited[friendId]=true;
-//     while(queue.length!=0){
-//         currentFriend=queue.shift()
-//         if(currentFriend.user_id===id){
-//             continue;
-            
-//         }else{
-//             currentFriendUser=await Profile.findOne({user_id : currentFriend});
-//             if(currentFriend!==friendId  && !friends(mainUser,currentFriendUser) && !sentRequest(mainUser,currentFriendUser) && !requested(mainUser,currentFriendUser) ){
-//                 result.push(currentFriendUser);
-//             }
-//             currentFriendUser.friends.forEach(neighborFriend=>{
-//                 if(!visited[neighborFriend.user_id] && neighborFriend.user_id!==id){
-//                     visited[neighborFriend.user_id]=true;
-//                     queue.push(neighborFriend.user_id)
-//                 }
-//             })
-//         }
-//     }
-//     return result
-// }
-
-newBfs=async(id)=>{
+bfs=async(id)=>{
     var queue=[id]
     const mainUser = await Friends.findOne({user_id : id});
     var result=[]
