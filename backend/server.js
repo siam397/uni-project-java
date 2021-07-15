@@ -173,9 +173,3 @@ wsServer.on("request",(req)=>{
     })
   })
 })
-
-
-     
-process.on('SIGINT', function() {
-   
-});
