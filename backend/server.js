@@ -18,8 +18,13 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+
+allmessages=[]
+db.once('open', async function() {
   console.log("connected")
+  
+  const find=await getMessages();
+  allmessages=find[0].messages
 });
 
 app.use(routes);
@@ -34,14 +39,30 @@ app.listen("3000",function(){
 })
 
 
+
+
+//web socket starts here
+
+const messagesDB=require("./models/messageModel")
+const message=new messagesDB({
+  _id:"0",
+  messages:[]
+})
+// message.save()
+const getMessages=async()=>{
+  return await messagesDB.find({})
+}
+const connections=[]
+
 wsServer=new SocketServer({
   httpServer:server,
   maxReceivedFrameSize: 1000000,
   maxReceivedMessageSize: 10 * 1024 * 1024,
   autoAcceptConnections: false
 })
-const connections=[]
-const allmessages=[]
+
+
+
 const allRecentChats=[]
 wsServer.on("request",(req)=>{
   var url=req.resourceURL.pathname
@@ -72,7 +93,6 @@ wsServer.on("request",(req)=>{
     connection.connect.sendUTF(mess)
   })
   connections.push(connection)
-  console.log("connected")
 
 
   connection.connect.on("message",async (mes)=>{
@@ -142,9 +162,20 @@ wsServer.on("request",(req)=>{
         allmessages[i]=messages;
       }
     }
-    connection.connect.on("close",(resCode,des)=>{
-      console.log(des+"     "+resCode)
+    connection.connect.on("close",async (resCode,des)=>{
       connections.splice(connections.indexOf(connection),1)
+      await messagesDB.deleteOne({ _id:"0" })
+      const message=new messagesDB({
+        _id:"0",
+        messages:allmessages
+      })
+      message.save()
     })
   })
 })
+
+
+     
+process.on('SIGINT', function() {
+   
+});
