@@ -10,7 +10,8 @@ const app = express()
 app.use(cors());
 const firebaseRef=require("./firebase/firebaseInitialize")
 app.use(bodyParser.json())
-const routes=require("./routes/postRoutes");
+const postRoutes=require("./routes/postRoutes");
+const getRoutes=require("./routes/getRoutes");
 const Connection=require("./models/connectionModel")
 mongoose.connect("mongodb+srv://pervyshrimp:123@cluster0.ydugl.mongodb.net/UniProjectDB",{ useNewUrlParser: true, useUnifiedTopology: true  })
 mongoose.set('useNewUrlParser', true);
@@ -27,7 +28,8 @@ db.once('open', async function() {
   allmessages=find[0].messages
 });
 
-app.use(routes);
+app.use(postRoutes);
+app.use(getRoutes);
 
 
 server.listen(4000,()=>{

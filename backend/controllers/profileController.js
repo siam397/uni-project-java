@@ -79,6 +79,15 @@ exports.getSuggestedUsers= async (req,res)=>{
     }
 }
 
+exports.getAllUser= async (req,res)=>{
+    const allUser=await Profile.find();
+    try{
+        res.status(200).send(allUser)
+    }catch(e){
+        res.status(500).send(e)
+    }
+}
+
 bfs=async(id)=>{
     var queue=[id]
     const mainUser = await Friends.findOne({user_id : id});

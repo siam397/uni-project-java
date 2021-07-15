@@ -14,4 +14,5 @@ router.post('/sendRequest',friendsController.sendRequest)
 router.post('/removeFriend',friendsController.removeFriend)
 router.post('/removeRequest',friendsController.removeRequest)
 router.post('/suggestedPeople',profileController.getSuggestedUsers)
+
 module.exports=router;
