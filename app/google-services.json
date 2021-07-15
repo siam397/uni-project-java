@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "647083543179",
+    "firebase_url": "https://beebo-b4b09-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "beebo-b4b09",
+    "storage_bucket": "beebo-b4b09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647083543179:android:7df906f90c84dbc634e28e",
+        "android_client_info": {
+          "package_name": "com.example.artsell"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647083543179-o0dbk7fummaf0d4q5dg9jvb7lc3vlqhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx-E9Zt5vRGVhwX6-uPph72DEuKENThgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647083543179-o0dbk7fummaf0d4q5dg9jvb7lc3vlqhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
