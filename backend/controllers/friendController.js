@@ -1,20 +1,42 @@
 const Profile=require("../models/profileModels")
 const Friends=require("../models/friendsModel")
 const _=require("lodash")
-exports.getFriends=(req,res)=>{
+const fs=require('fs')
+exports.getFriends=async (req,res)=>{
     console.log("ashse");
     const id=req.body.ID;
     console.log("this is id"+id);
-    Friends.findOne({user_id:id},function(err,profileInfo){
-        
-        if(err){
-            console.log(err)
-        }else{
-            res.send({
-                friends:profileInfo.friends
-            })
+    const friends=[]
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    var fren={};
+    var allFriends=await Friends.findOne({user_id:id})
+    allFriends=allFriends.friends;
+    for(const friend of allFriends){
+        console.log(customer)
+        fren={
+            _id:friend._id,
+            user_id:friend.user_id,
+            username:friend.username,
+            bio:friend.bio,
+            profilePicture:customer[friend.user_id]
         }
+        console.log(fren)
+        friends.push(fren)
+    }
+    res.status(201).send({
+        friends:friends
     })
+    // Friends.findOne({user_id:id},function(err,profileInfo){
+    //     console.log(profileInfo.friends)
+    //     if(err){
+    //         console.log(err)
+    //     }else{
+    //         res.send({
+    //             friends:profileInfo.friends
+    //         })
+    //     }
+    // })
 }
 
 exports.acceptRequest=async (req,res)=>{

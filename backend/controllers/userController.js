@@ -1,8 +1,9 @@
 const User=require("../models/userModels")
 const Profile=require("../models/profileModels")
 const Friend=require("../models/friendsModel")
+const defaultDP=require("../utilities/defaultProfilePicture")
 const bcrypt=require("bcrypt");
-const { use } = require("../routes/postRoutes");
+const fs=require('fs')
 const firebaseRef = require('../firebase/firebaseInitialize');
 exports.login=async (req,res)=>{
     console.log("called")
@@ -45,8 +46,7 @@ exports.signup=async (req,res)=>{
         if(user.length!==0){
             res.status(420).send("email exists");
         }else{
-            
-            
+            try{
                 const hashedPassword=await bcrypt.hash(password.toString(),10)
                 console.log(hashedPassword)
                 const newUser=new User({
@@ -56,6 +56,10 @@ exports.signup=async (req,res)=>{
                 })
                 newUser.save()
                 const user_id=newUser._id;
+                const jsonString = fs.readFileSync('./profilePictures.json')
+                var customer = JSON.parse(jsonString)
+                customer[newUser._id]=defaultDP
+                fs.writeFileSync('./profilePictures.json', JSON.stringify(customer))
                 const usersRef = firebaseRef.child(`${user_id}`);
                 usersRef.set('created')
                 const newProfile=new Profile({
@@ -74,11 +78,14 @@ exports.signup=async (req,res)=>{
                 })
                 newFriends.save();
                 
-                res.send({
+                res.status(201).send({
                     username:newUser.username,
                     email:newUser.email,
                     _id:newUser._id
                 })
+            }catch(e){
+                res.status(501).send(e)
+            }    
         }
     })
 }
