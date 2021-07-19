@@ -22,5 +22,8 @@
     "nodemon": "^2.0.7",
     "websocket": "^1.0.33",
     "ws": "^7.4.3"
-  }
+  },
+  "nodemonConfig": {
+    "ignore": ["*.json"]
+ }
 }

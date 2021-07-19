@@ -1,9 +1,12 @@
 const Profile=require("../models/profileModels")
 const Friends=require("../models/friendsModel")
 const lodash=require('lodash');
+const fs=require('fs')
 visited={};
 exports.getProfileInfo=(req,res)=>{
     const id=req.body.ID;
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
     Profile.findOne({user_id:id},function(err,profileInfo){
         
         if(err){
@@ -12,7 +15,7 @@ exports.getProfileInfo=(req,res)=>{
             res.status(201).send({
                 username:profileInfo.username,
                 bio:profileInfo.bio,
-                profilePicture:profileInfo.profilePicture,
+                profilePicture:customer[id],
                 friends:profileInfo.friends
             })
             
@@ -26,11 +29,13 @@ exports.getAnotherUser=async (req,res)=>{
     const randomUser = await Profile.findOne({user_id:secondId})
     const firstPerson = await Profile.findOne({user_id:firstId})
     const firstPersonFriends = await Friends.findOne({user_id:firstId})
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
     const userInfo={
         user_Id:randomUser.user_id,
         username:randomUser.username,
         bio:randomUser.bio,
-        profilePicture:randomUser.profilePicture, 
+        profilePicture:customer[secondId], 
     }
     if(lodash.find(firstPersonFriends.friends, ['user_id',secondId])){
         userInfo["friend"]=true;
@@ -50,6 +55,9 @@ exports.getAnotherUser=async (req,res)=>{
     
     res.status(201).send(userInfo)
 }
+
+
+
 
 exports.getSuggestedUsers= async (req,res)=>{
     const id=req.body.id;
@@ -79,6 +87,9 @@ exports.getSuggestedUsers= async (req,res)=>{
     }
 }
 
+
+
+
 exports.getAllUser= async (req,res)=>{
     const allUser=await Profile.find();
     try{
@@ -87,6 +98,10 @@ exports.getAllUser= async (req,res)=>{
         res.status(500).send(e)
     }
 }
+
+
+
+
 
 bfs=async(id)=>{
     var queue=[id]

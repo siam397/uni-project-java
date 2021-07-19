@@ -1,20 +1,38 @@
 const Profile=require("../models/profileModels")
 const Friends=require("../models/friendsModel")
 const _=require("lodash")
-exports.getFriends=(req,res)=>{
-    console.log("ashse");
+const fs=require('fs')
+exports.getFriends=async (req,res)=>{
     const id=req.body.ID;
-    console.log("this is id"+id);
-    Friends.findOne({user_id:id},function(err,profileInfo){
-        
-        if(err){
-            console.log(err)
-        }else{
-            res.send({
-                friends:profileInfo.friends
-            })
+    const friends=[]
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    var fren={};
+    var allFriends=await Friends.findOne({user_id:id})
+    allFriends=allFriends.friends;
+    for(const friend of allFriends){
+        fren={
+            _id:friend._id,
+            user_id:friend.user_id,
+            username:friend.username,
+            bio:friend.bio,
+            profilePicture:customer[friend.user_id]
         }
+        friends.push(fren)
+    }
+    res.status(201).send({
+        friends:friends
     })
+    // Friends.findOne({user_id:id},function(err,profileInfo){
+    //     console.log(profileInfo.friends)
+    //     if(err){
+    //         console.log(err)
+    //     }else{
+    //         res.send({
+    //             friends:profileInfo.friends
+    //         })
+    //     }
+    // })
 }
 
 exports.acceptRequest=async (req,res)=>{
@@ -39,8 +57,7 @@ exports.acceptRequest=async (req,res)=>{
         secondPersonFriends.save();
         res.status(201)
     }catch(e){
-        console.log(e)
-        res.status(501)
+        res.status(501).send(e)
     }
 }
 
@@ -58,8 +75,7 @@ exports.sendRequest=async (req,res)=>{
         secondPersonFriends.save();
         res.status(201)
     }catch(e){
-        console.log(e)
-        res.status(501)
+        res.status(501).send(e)
     }
 }
 
@@ -74,8 +90,7 @@ exports.removeFriend=async (req,res)=>{
         unfriend(firstId,secondId);
         res.status(201)
     }catch(e){
-        console.log(e)
-        res.status(501)
+        res.status(501).send(e)
     }
 }
 

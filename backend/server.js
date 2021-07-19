@@ -7,6 +7,7 @@ const mongoose=require("mongoose")
 const cors=require("cors")
 const server=http.createServer((req,res)=>{})
 const app = express()
+const fs=require('fs')
 app.use(cors());
 const firebaseRef=require("./firebase/firebaseInitialize")
 app.use(bodyParser.json())
@@ -102,46 +103,45 @@ wsServer.on("request",(req)=>{
     const usersRef = firebaseRef.child('users');
     const snapshot = await firebaseRef.once('value');
     const value = snapshot.val();
-
-
+    
+    const url1=splittedurl[0];
+    const url2=splittedurl[1]
+    
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    var url1Image=customer[url1]
+    var url2Image=customer[url2]
     //saves chat to firebase
     if(value[splittedurl[0]] === "created"){
-      const url1=splittedurl[0];
-      const url2=splittedurl[1]
       var value1={}
-      value1[url1]=[{id:url2,message:mes.utf8Data}];
+      value1[url1]=[{id:url2,profilePicture:url2Image,message:mes.utf8Data}];
+      
       firebaseRef.update(value1)
       
       
     }else if(value[splittedurl[0]] !== "created"){
-      const url1=splittedurl[0];
-      const url2=splittedurl[1]
       const snapshot = await firebaseRef.once('value');
       const value = snapshot.val();
       value[url1] = lodash.reject(value[url1],person=>{
         return person.id==url2
       })
-      value[url1]=[{id:url2,message:mes.utf8Data},...value[url1]];
+      value[url1]=[{id:url2,profilePicture:url2Image,message:mes.utf8Data},...value[url1]];
       firebaseRef.update(value)
     }
 
 
-    if(value[splittedurl[1]] === "created"){
-      const url1=splittedurl[0];
-      const url2=splittedurl[1]
+    if(value[splittedurl[1]] === "created" ){
       var value1={}
-      value1[url2]=[{id:url1,message:mes.utf8Data}];
+      value1[url2]=[{id:url1,profilePicture:url1Image,message:mes.utf8Data}];
       firebaseRef.update(value1)
       
     }else if(value[splittedurl[1]] !== "created"){
-      const url1=splittedurl[0];
-      const url2=splittedurl[1]
       const snapshot = await firebaseRef.once('value');
       const value = snapshot.val();
       value[url2] = lodash.reject(value[url2],person=>{
         return person.id==url1
       })
-      value[url2]=[{id:url1,message:mes.utf8Data},...value[url2]];
+      value[url2]=[{id:url1,profilePicture:url1Image,message:mes.utf8Data},...value[url2]];
       firebaseRef.update(value)
     }
 
@@ -166,12 +166,18 @@ wsServer.on("request",(req)=>{
     }
     connection.connect.on("close",async (resCode,des)=>{
       connections.splice(connections.indexOf(connection),1)
-      await messagesDB.deleteOne({ _id:"0" })
-      const message=new messagesDB({
-        _id:"0",
-        messages:allmessages
-      })
-      message.save()
+      
     })
   })
 })
+
+const saveText=async(x)=>{
+  const doc = await messagesDB.findOne({_id:"0"});
+      doc.messages=allmessages;
+      await doc.save()
+}
+
+process.on('beforeExit', async () => {
+    await saveText()
+    process.exit(0) // if you don't close yourself this will run forever
+});
