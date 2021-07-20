@@ -10,11 +10,12 @@ public class Profile {
     public Profile(){ }
 
     //C O N S T R U C T O R
-    public Profile(String user_id, String username, String bio, String profilePicture) {
+    public Profile(String user_id, String username, String bio, String profilePicture/*, String[] posts*/) {
         this.user_id = user_id;
         this.username = username;
         this.bio = bio;
         this.profilePicture = profilePicture;
+//        this.posts = posts;
     }
 
 
@@ -36,6 +37,10 @@ public class Profile {
         return profilePicture;
     }
 
+//    public String[] getPosts() {
+//        return posts;
+//    }
+
 
 
     //S E T T E R
@@ -54,4 +59,8 @@ public class Profile {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+//    public void setPosts(String[] posts) {
+//        this.posts = posts;
+//    }
 }
