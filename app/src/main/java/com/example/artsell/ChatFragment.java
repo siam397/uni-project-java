@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.artsell.models.Chatx;
 import com.example.artsell.models.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +37,7 @@ public class ChatFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("users");
     private RecyclerView myRecyclerView;
-    private List<Profile> listFriend;
+    private List<Chatx> listTexts;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,45 +78,46 @@ public class ChatFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // F R E N S
-        listFriend = new ArrayList<>();
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-                String id=sharedPreferences.getString("user","");
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                Object s=map.get(id);
-                System.out.println(id+" "+s.toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-//                Log.i("TAG", "Failed to read value.", error.toException());
-            }
-        });
-//        listFriend.add(new Profile("1", "Noman", "Shera", R.drawable.dp1));
-//        listFriend.add(new Profile("2", "Mamun", "Not shera", R.drawable.dp2));
-//        listFriend.add(new Profile("3", "Kalam", "Don't hurt me man", R.drawable.dp3));
-//        listFriend.add(new Profile("4", "Dr Strange", "wot", R.drawable.dp4));
-//        listFriend.add(new Profile("5", "Rahim Rahman", "no", R.drawable.dp5));
-//        listFriend.add(new Profile("6", "Karim Kahman", "dekhi", R.drawable.dp6));
-//        listFriend.add(new Profile("7", "Boring", "wut", R.drawable.dp7));
-//        listFriend.add(new Profile("8", "DJ", "hm", R.drawable.dp8));
-//        listFriend.add(new Profile("9", "RJ", "hmm", R.drawable.dp9));
-//        listFriend.add(new Profile("10", "CJ", "gta", R.drawable.dp10));
-//        listFriend.add(new Profile("11", "Bro fist", "pewpew", R.drawable.dp11));
-        // F R E N S
+        // T E X T S
+        listTexts = new ArrayList<>();
+        listTexts.add(new Chatx("1", "Noman", R.drawable.dp1, "bruh"));
+        listTexts.add(new Chatx("2", "Mamun", R.drawable.dp2, "lmao"));
+        listTexts.add(new Chatx("3", "Kalam", R.drawable.dp3, "no"));
+        listTexts.add(new Chatx("4", "Dr Strange", R.drawable.dp4, "A quick brown fox jumped over the lazy dog"));
+        listTexts.add(new Chatx("5", "Rahim Rahman", R.drawable.dp5, "bruhbruhbruhbruh"));
+        listTexts.add(new Chatx("6", "Karim Kahman", R.drawable.dp6, "How r u"));
+        listTexts.add(new Chatx("7", "Boring", R.drawable.dp7, "Computer Architecture"));
+        listTexts.add(new Chatx("8", "DJ", R.drawable.dp8, "SRE bad"));
+        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
+        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
+        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
+        
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+//                String id=sharedPreferences.getString("user","");
+//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+//                Object s=map.get(id);
+//                System.out.println(id+" "+s.toString());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+////                Log.i("TAG", "Failed to read value.", error.toException());
+//            }
+//        });
+        
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_chat, container, false);
         myRecyclerView = (RecyclerView) v.findViewById(R.id.chat_recyclerview);
-        ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(getContext(),listFriend);
+        ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(getContext(),listTexts);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myRecyclerView.setAdapter(recyclerViewAdapter);
         return v;

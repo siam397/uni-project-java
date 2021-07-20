@@ -41,6 +41,8 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
+import static com.example.artsell.utilities.Variables.url_2;
+
 public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     private String name;
     private String friendname;
@@ -69,7 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
         textView.setText(name);
-        String baselink="http://192.168.0.103:4000/";
+        String baselink=url_2;
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String userInfo=sharedPreferences.getString("user","");
         setSERVER_PATH(baselink+friendId+","+userInfo);

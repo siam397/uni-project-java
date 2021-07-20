@@ -166,6 +166,11 @@ wsServer.on("request",(req)=>{
     }
     connection.connect.on("close",async (resCode,des)=>{
       connections.splice(connections.indexOf(connection),1)
+
+      // ...
+      const doc = await messagesDB.findOne({_id:"0"});
+      doc.messages=allmessages;
+      await doc.save()
       
     })
   })
