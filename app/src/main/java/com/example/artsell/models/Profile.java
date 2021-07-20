@@ -5,17 +5,18 @@ public class Profile {
     private String username;
     private String bio;
     private String profilePicture;
+    private String lastText;
 //    private String[] posts;
 
     public Profile(){ }
 
     //C O N S T R U C T O R
-    public Profile(String user_id, String username, String bio, String profilePicture/*, String[] posts*/) {
+    public Profile(String user_id, String username, String bio, String profilePicture, String lastText) {
         this.user_id = user_id;
         this.username = username;
         this.bio = bio;
         this.profilePicture = profilePicture;
-//        this.posts = posts;
+        this.lastText = lastText;
     }
 
 
@@ -35,6 +36,10 @@ public class Profile {
 
     public String getProfilePicture() {
         return profilePicture;
+    }
+
+    public String getLastText() {
+        return lastText;
     }
 
 //    public String[] getPosts() {
@@ -58,6 +63,10 @@ public class Profile {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public void setLastText(String lastText) {
+        this.lastText = lastText;
     }
 
 //    public void setPosts(String[] posts) {
