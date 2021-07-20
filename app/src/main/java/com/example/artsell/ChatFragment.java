@@ -79,24 +79,24 @@ public class ChatFragment extends Fragment {
 
         // F R E N S
         listFriend = new ArrayList<>();
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-                String id=sharedPreferences.getString("user","");
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                Object s=map.get(id);
-                System.out.println(id+" "+s.toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-//                Log.i("TAG", "Failed to read value.", error.toException());
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+//                String id=sharedPreferences.getString("user","");
+//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+//                Object s=map.get(id);
+//                System.out.println(id+" "+s.toString());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+////                Log.i("TAG", "Failed to read value.", error.toException());
+//            }
+//        });
 //        listFriend.add(new Profile("1", "Noman", "Shera", R.drawable.dp1));
 //        listFriend.add(new Profile("2", "Mamun", "Not shera", R.drawable.dp2));
 //        listFriend.add(new Profile("3", "Kalam", "Don't hurt me man", R.drawable.dp3));
