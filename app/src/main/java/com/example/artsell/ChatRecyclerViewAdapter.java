@@ -20,9 +20,9 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     List<Profile> mData;
 
 
-    public ChatRecyclerViewAdapter(Context nContext, List<Profile> nData) {
-        this.mContext = nContext;
-        this.mData = nData;
+    public ChatRecyclerViewAdapter(Context mContext, List<Profile> mData) {
+        this.mContext = mContext;
+        this.mData = mData;
     }
 
     @NonNull
@@ -38,6 +38,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
 
         holder.tv_name.setText(mData.get(position).getUsername());
+        holder.tv_text.setText(mData.get(position).getText());
 //        holder.img.setImageResource(mData.get(position).getProfilePicture());
     }
 
@@ -48,12 +49,14 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     public static class AnotherViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_name;
+        private TextView tv_text;
         private ImageView img;
 
         public AnotherViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_name = (TextView) itemView.findViewById(R.id.name_chat);
+            tv_text = (TextView) itemView.findViewById(R.id.text_chat);
             img = (ImageView) itemView.findViewById(R.id.dp_chat);
         }
     }
