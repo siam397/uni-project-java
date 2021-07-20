@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.artsell.models.Chatx;
 import com.example.artsell.models.Profile;
 
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.List;
 public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerViewAdapter.AnotherViewHolder> {
 
     Context mContext;
-    List<Profile> mData;
+    List<Chatx> mData;
 
 
-    public ChatRecyclerViewAdapter(Context mContext, List<Profile> mData) {
+    public ChatRecyclerViewAdapter(Context mContext, List<Chatx> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -39,7 +40,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
         holder.tv_name.setText(mData.get(position).getUsername());
         holder.tv_text.setText(mData.get(position).getLastText());
-//        holder.img.setImageResource(mData.get(position).getProfilePicture());
+        holder.img.setImageResource(mData.get(position).getProfilePicture());
     }
 
     @Override
