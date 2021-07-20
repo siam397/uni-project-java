@@ -38,7 +38,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
 
         holder.tv_name.setText(mData.get(position).getUsername());
-        holder.tv_text.setText(mData.get(position).getText());
+        holder.tv_text.setText(mData.get(position).getLastText());
 //        holder.img.setImageResource(mData.get(position).getProfilePicture());
     }
 
