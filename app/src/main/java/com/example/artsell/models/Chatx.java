@@ -28,4 +28,20 @@ public class Chatx {
     public String getMessage() {
         return message;
     }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProfilePicture(int profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

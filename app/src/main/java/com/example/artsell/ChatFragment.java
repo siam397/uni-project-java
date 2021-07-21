@@ -1,9 +1,11 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,8 +37,7 @@ import java.util.Objects;
 public class ChatFragment extends Fragment {
 
     View v;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("users");
+
     private RecyclerView myRecyclerView;
     private List<Chatx> listTexts;
 
@@ -91,25 +93,28 @@ public class ChatFragment extends Fragment {
         listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
         listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
         listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
-        
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-//                String id=sharedPreferences.getString("user","");
-//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//                Object s=map.get(id);
-//                System.out.println(id+" "+s.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-////                Log.i("TAG", "Failed to read value.", error.toException());
-//            }
-//        });
+        SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+        String id = preferences.getString("user", "");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(id);
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                GenericTypeIndicator<List<Chatx>> genericTypeIndicator =new GenericTypeIndicator<List<Chatx>>(){};
+//                List<Chatx> taskDesList=dataSnapshot.getValue(genericTypeIndicator);
+//                for(int i=0;i<taskDesList.size();i++){
+//                    System.out.println(taskDesList.get(i).toString());
+//                }
+                System.out.println(dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
         
     }
 
