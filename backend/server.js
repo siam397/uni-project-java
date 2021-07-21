@@ -103,7 +103,7 @@ wsServer.on("request",(req)=>{
     const usersRef = firebaseRef.child('users');
     const snapshot = await firebaseRef.once('value');
     const value = snapshot.val();
-    
+    var objmes=JSON.parse(mes.utf8Data)
     const url1=splittedurl[0];
     const url2=splittedurl[1]
     
@@ -114,7 +114,7 @@ wsServer.on("request",(req)=>{
     //saves chat to firebase
     if(value[splittedurl[0]] === "created"){
       var value1={}
-      value1[url1]=[{id:url2,profilePicture:url2Image,message:mes.utf8Data}];
+      value1[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name}];
       
       firebaseRef.update(value1)
       
@@ -125,14 +125,14 @@ wsServer.on("request",(req)=>{
       value[url1] = lodash.reject(value[url1],person=>{
         return person.id==url2
       })
-      value[url1]=[{id:url2,profilePicture:url2Image,message:mes.utf8Data},...value[url1]];
+      value[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name},...value[url1]];
       firebaseRef.update(value)
     }
 
 
     if(value[splittedurl[1]] === "created" ){
       var value1={}
-      value1[url2]=[{id:url1,profilePicture:url1Image,message:mes.utf8Data}];
+      value1[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name}];
       firebaseRef.update(value1)
       
     }else if(value[splittedurl[1]] !== "created"){
@@ -141,7 +141,7 @@ wsServer.on("request",(req)=>{
       value[url2] = lodash.reject(value[url2],person=>{
         return person.id==url1
       })
-      value[url2]=[{id:url1,profilePicture:url1Image,message:mes.utf8Data},...value[url2]];
+      value[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name},...value[url2]];
       firebaseRef.update(value)
     }
 
