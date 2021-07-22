@@ -1,27 +1,30 @@
 package com.example.artsell.models;
 
 public class Chatx {
-    private String user_id;
+    private String id;
     private String name;
-    private int profilePicture;
+    private String profilePicture;
     private String message;
+    private String toPerson;
+    public Chatx(){}
 
-    public Chatx(String user_id, String name, int profilePicture, String message) {
-        this.user_id = user_id;
+    public Chatx(String id, String name, String profilePicture, String message, String toPerson) {
+        this.id = id;
         this.name = name;
         this.profilePicture = profilePicture;
         this.message = message;
+        this.toPerson = toPerson;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getProfilePicture() {
+    public String getProfilePicture() {
         return profilePicture;
     }
 
@@ -29,15 +32,23 @@ public class Chatx {
         return message;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public String getToPerson() {
+        return toPerson;
+    }
+
+    public void setToPerson(String toPerson) {
+        this.toPerson = toPerson;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setProfilePicture(int profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 

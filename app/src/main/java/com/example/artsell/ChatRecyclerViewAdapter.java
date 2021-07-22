@@ -1,6 +1,9 @@
 package com.example.artsell;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +41,11 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
 
-        holder.tv_name.setText(mData.get(position).getName());
+        holder.tv_name.setText(mData.get(position).getToPerson());
         holder.tv_text.setText(mData.get(position).getMessage());
-        holder.img.setImageResource(mData.get(position).getProfilePicture());
+        byte[] image= Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
+        Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+        holder.img.setImageBitmap(bitmap);
     }
 
     @Override

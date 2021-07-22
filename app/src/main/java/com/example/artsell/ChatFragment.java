@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,29 +83,47 @@ public class ChatFragment extends Fragment {
 
         // T E X T S
         listTexts = new ArrayList<>();
-        listTexts.add(new Chatx("1", "Noman", R.drawable.dp1, "bruh"));
-        listTexts.add(new Chatx("2", "Mamun", R.drawable.dp2, "lmao"));
-        listTexts.add(new Chatx("3", "Kalam", R.drawable.dp3, "no"));
-        listTexts.add(new Chatx("4", "Dr Strange", R.drawable.dp4, "A quick brown fox jumped over the lazy dog"));
-        listTexts.add(new Chatx("5", "Rahim Rahman", R.drawable.dp5, "bruhbruhbruhbruh"));
-        listTexts.add(new Chatx("6", "Karim Kahman", R.drawable.dp6, "How r u"));
-        listTexts.add(new Chatx("7", "Boring", R.drawable.dp7, "Computer Architecture"));
-        listTexts.add(new Chatx("8", "DJ", R.drawable.dp8, "SRE bad"));
-        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
-        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
-        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
+//        listTexts.add(new Chatx("1", "Noman", R.drawable.dp1, "bruh"));
+//        listTexts.add(new Chatx("2", "Mamun", R.drawable.dp2, "lmao"));
+//        listTexts.add(new Chatx("3", "Kalam", R.drawable.dp3, "no"));
+//        listTexts.add(new Chatx("4", "Dr Strange", R.drawable.dp4, "A quick brown fox jumped over the lazy dog"));
+//        listTexts.add(new Chatx("5", "Rahim Rahman", R.drawable.dp5, "bruhbruhbruhbruh"));
+//        listTexts.add(new Chatx("6", "Karim Kahman", R.drawable.dp6, "How r u"));
+//        listTexts.add(new Chatx("7", "Boring", R.drawable.dp7, "Computer Architecture"));
+//        listTexts.add(new Chatx("8", "DJ", R.drawable.dp8, "SRE bad"));
+//        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
+//        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
+//        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
+
+
+
+
+        
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        myRecyclerView = (RecyclerView) v.findViewById(R.id.chat_recyclerview);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
         String id = preferences.getString("user", "");
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(id);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                GenericTypeIndicator<List<Chatx>> genericTypeIndicator =new GenericTypeIndicator<List<Chatx>>(){};
-//                List<Chatx> taskDesList=dataSnapshot.getValue(genericTypeIndicator);
-//                for(int i=0;i<taskDesList.size();i++){
-//                    System.out.println(taskDesList.get(i).toString());
+                GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
+                List<Chatx> chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                myRecyclerView.setAdapter(new ChatRecyclerViewAdapter(getContext(),chatxList));
+
+//                ArrayList<Chatx>chatxes=new ArrayList<>();
+//                if(dataSnapshot.getValue()!="created"){
+//                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+//                        Chatx chatx=new Chatx(ds.child("id").getValue().toString(),ds.child("name").getValue().toString(),ds.child("profilePicture").getValue().toString(),ds.child("message").getValue().toString());
+//                        System.out.println(chatx.getName());;
+//                    }
 //                }
-                System.out.println(dataSnapshot.getValue());
             }
 
             @Override
@@ -112,19 +131,11 @@ public class ChatFragment extends Fragment {
 
             }
         });
-
-
-
-        
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_chat, container, false);
-        myRecyclerView = (RecyclerView) v.findViewById(R.id.chat_recyclerview);
-        ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(getContext(),listTexts);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myRecyclerView.setAdapter(recyclerViewAdapter);
         return v;
     }
 

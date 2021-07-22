@@ -1,5 +1,6 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -111,8 +112,8 @@ public class FriendsFragment extends Fragment {
         myRecyclerView = (RecyclerView) v.findViewById(R.id.friends_recyclerview);
         myRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
 
-        SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-        String id=sharedPreferences.getString("user","");
+        SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+        String id = preferences.getString("user", "");
         Retrofit retrofit=Variables.initializeRetrofit();
         RestApiPost restApiPost=retrofit.create(RestApiPost.class);
         UserID userID=new UserID(id);

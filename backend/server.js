@@ -28,6 +28,7 @@ db.once('open', async function() {
   const find=await getMessages();
   allmessages=find[0].messages
 });
+const Profile=require("./models/profileModels")
 
 app.use(postRoutes);
 app.use(getRoutes);
@@ -111,37 +112,63 @@ wsServer.on("request",(req)=>{
     var customer = JSON.parse(jsonString)
     var url1Image=customer[url1]
     var url2Image=customer[url2]
+
+
     //saves chat to firebase
     if(value[splittedurl[0]] === "created"){
       var value1={}
-      value1[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name}];
+      var profile=await Profile.findOne({user_id:url2});
+      var chatNameurl2=profile.username;
+      if(objmes.message==null){
+        value1[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2}];
+      }else{
+        value1[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2}];
+      }
       
       firebaseRef.update(value1)
       
       
     }else if(value[splittedurl[0]] !== "created"){
       const snapshot = await firebaseRef.once('value');
+      var profile=await Profile.findOne({user_id:url2});
+      var chatNameurl2=profile.username;
       const value = snapshot.val();
       value[url1] = lodash.reject(value[url1],person=>{
         return person.id==url2
       })
-      value[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name},...value[url1]];
+      if(objmes.message==null){
+        value[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2},...value[url1]];
+      }else{
+        value[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2},...value[url1]];
+      }
       firebaseRef.update(value)
     }
 
 
     if(value[splittedurl[1]] === "created" ){
       var value1={}
-      value1[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name}];
+      var profile=await Profile.findOne({user_id:url1});
+      var chatNameurl1=profile.username;
+      if(objmes.message==null){
+        value1[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1}];
+      }else{
+        value1[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1}];
+      }
       firebaseRef.update(value1)
       
     }else if(value[splittedurl[1]] !== "created"){
       const snapshot = await firebaseRef.once('value');
       const value = snapshot.val();
+      var profile=await Profile.findOne({user_id:url1});
+      var chatNameurl1=profile.username;
       value[url2] = lodash.reject(value[url2],person=>{
         return person.id==url1
       })
-      value[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name},...value[url2]];
+      if(objmes.message==null){
+        value[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1},...value[url2]];
+      }else{
+        value[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1},...value[url2]];
+      }
       firebaseRef.update(value)
     }
 
