@@ -22,8 +22,13 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     Context mContext;
     List<Chatx> mData;
-
-
+    private OnItemClickListener mListener;
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
     public ChatRecyclerViewAdapter(Context mContext, List<Chatx> mData) {
         this.mContext = mContext;
         this.mData = mData;
@@ -34,7 +39,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public AnotherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(mContext).inflate(R.layout.item_chat, parent, false);
-        AnotherViewHolder vHolder = new AnotherViewHolder(v);
+        AnotherViewHolder vHolder = new AnotherViewHolder(v,mListener);
         return vHolder;
     }
 
@@ -59,6 +64,7 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
         byte[] image= Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
         Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
         holder.img.setImageBitmap(bitmap);
+
     }
 
     @Override
@@ -71,12 +77,24 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
         private TextView tv_text;
         private ImageView img;
 
-        public AnotherViewHolder(@NonNull View itemView) {
+        public AnotherViewHolder(@NonNull View itemView,final OnItemClickListener listener) {
             super(itemView);
 
             tv_name = (TextView) itemView.findViewById(R.id.name_chat);
             tv_text = (TextView) itemView.findViewById(R.id.text_chat);
             img = (ImageView) itemView.findViewById(R.id.dp_chat);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
+
 }

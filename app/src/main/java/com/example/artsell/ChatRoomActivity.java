@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -55,6 +56,8 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
 
     private EditText messageEdit;
     private TextView textView;
+    private String profilePicture;
+    private CircleImageView circleImageView;
     private RecyclerView recyclerView;
     private Button sendbtn;
     private String friendId;
@@ -68,6 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         friendId=getIntent().getStringExtra("id");
         setContentView(R.layout.activity_chat_room);
         textView=findViewById(R.id.friend_name);
+        circleImageView=findViewById(R.id.profile_image);
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
         textView.setText(name);
@@ -77,6 +81,11 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         setSERVER_PATH(baselink+friendId+","+userInfo);
         //needs to change
         friendname=getIntent().getStringExtra("username");
+        profilePicture=getIntent().getStringExtra("profilePicture");
+        System.out.println(profilePicture);
+        byte[] image=Base64.decode(profilePicture,Base64.DEFAULT);
+        Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
+        circleImageView.setImageBitmap(bitmap);
         name=sharedPreferences.getString("username","");
         initiateSocketConnection();
     }

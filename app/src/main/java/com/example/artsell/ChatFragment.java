@@ -2,6 +2,7 @@ package com.example.artsell;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -115,15 +116,21 @@ public class ChatFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
                 List<Chatx> chatxList=dataSnapshot.getValue(genericTypeIndicator);
-                myRecyclerView.setAdapter(new ChatRecyclerViewAdapter(getContext(),chatxList));
+                ChatRecyclerViewAdapter mAdapter=new ChatRecyclerViewAdapter(getContext(),chatxList);
+                myRecyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(new ChatRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+//                        changeItem(position, "Clicked");
+                        Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
+                        intent.putExtra("id",chatxList.get(position).getId());
+                        intent.putExtra("username",chatxList.get(position).getToPerson());
+                        intent.putExtra("profilePicture",chatxList.get(position).getProfilePicture());
+                        getActivity().getBaseContext().startActivity(intent);
 
-//                ArrayList<Chatx>chatxes=new ArrayList<>();
-//                if(dataSnapshot.getValue()!="created"){
-//                    for(DataSnapshot ds : dataSnapshot.getChildren()){
-//                        Chatx chatx=new Chatx(ds.child("id").getValue().toString(),ds.child("name").getValue().toString(),ds.child("profilePicture").getValue().toString(),ds.child("message").getValue().toString());
-//                        System.out.println(chatx.getName());;
-//                    }
-//                }
+                    }
+                });
+
             }
 
             @Override
@@ -138,6 +145,7 @@ public class ChatFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_chat, container, false);
         return v;
     }
+
 
 
 }
