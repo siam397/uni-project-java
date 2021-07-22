@@ -42,7 +42,20 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
 
         holder.tv_name.setText(mData.get(position).getToPerson());
-        holder.tv_text.setText(mData.get(position).getMessage());
+        if(mData.get(position).getMessage().equals("faludaBoizzz9252image")){
+            if(mData.get(position).getName().equals(mData.get(position).getToPerson())){
+                holder.tv_text.setText("Image Received");
+            }else{
+                holder.tv_text.setText("Image Sent");
+            }
+        } else{
+            if(mData.get(position).getName().equals(mData.get(position).getToPerson())){
+                holder.tv_text.setText(mData.get(position).getMessage());
+            }else{
+                String text="You: "+mData.get(position).getMessage();
+                holder.tv_text.setText(text);
+            }
+        }
         byte[] image= Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
         Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
         holder.img.setImageBitmap(bitmap);

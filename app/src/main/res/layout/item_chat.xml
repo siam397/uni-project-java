@@ -46,6 +46,8 @@
         android:fontFamily="@font/kievitotbold"
         android:gravity="left"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textAllCaps="false"
         android:textColor="#363636"
         android:textSize="13dp" />
