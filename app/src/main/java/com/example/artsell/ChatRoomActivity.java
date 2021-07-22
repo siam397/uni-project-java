@@ -53,7 +53,6 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     public void setSERVER_PATH(String SERVER_PATH) {
         this.SERVER_PATH = SERVER_PATH;
     }
-
     private EditText messageEdit;
     private TextView textView;
     private String profilePicture;
@@ -135,10 +134,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
 
-            runOnUiThread(()->{
-                Toast.makeText(ChatRoomActivity.this,"successful",Toast.LENGTH_SHORT).show();
-                initializeView();
-            });
+            runOnUiThread(ChatRoomActivity.this::initializeView);
         }
 
         @Override
