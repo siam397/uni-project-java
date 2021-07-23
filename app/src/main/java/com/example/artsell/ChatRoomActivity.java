@@ -54,7 +54,6 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         this.SERVER_PATH = SERVER_PATH;
     }
     private EditText messageEdit;
-    private TextView textView;
     private String profilePicture;
     private CircleImageView circleImageView;
     private RecyclerView recyclerView;
@@ -69,11 +68,9 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         super.onCreate(savedInstanceState);
         friendId=getIntent().getStringExtra("id");
         setContentView(R.layout.activity_chat_room);
-        textView=findViewById(R.id.friend_name);
         circleImageView=findViewById(R.id.profile_image);
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
-        textView.setText(name);
         String baselink=url_2;
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
         String userInfo=sharedPreferences.getString("user","");

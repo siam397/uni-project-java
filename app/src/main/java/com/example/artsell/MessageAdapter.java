@@ -46,20 +46,17 @@ public class MessageAdapter extends RecyclerView.Adapter{
     }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView receivedText,name;
+        TextView receivedText;
         public ReceivedMessageHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.name);
             receivedText=itemView.findViewById(R.id.receivedText);
         }
     }
 
     private class ReceivedImageHolder extends RecyclerView.ViewHolder {
-        TextView name;
         ImageView image;
         public ReceivedImageHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.name);
             image=itemView.findViewById(R.id.receivedImage);
         }
     }
@@ -125,11 +122,9 @@ public class MessageAdapter extends RecyclerView.Adapter{
             }else{
                 if(message.has("message")){
                     ReceivedMessageHolder messageHolder=(ReceivedMessageHolder) holder;
-                    messageHolder.name.setText(message.getString("name"));
                     messageHolder.receivedText.setText(message.getString("message"));
                 }else{
                     ReceivedImageHolder imageHolder=(ReceivedImageHolder) holder;
-                    imageHolder.name.setText(message.getString("name"));
                     Bitmap bitmap=getBitmapfromString(message.getString("image"));
                     imageHolder.image.setImageBitmap(bitmap);
                 }
