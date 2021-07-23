@@ -203,13 +203,5 @@ wsServer.on("request",(req)=>{
   })
 })
 
-const saveText=async(x)=>{
-  const doc = await messagesDB.findOne({_id:"0"});
-      doc.messages=allmessages;
-      await doc.save()
-}
 
-process.on('beforeExit', async () => {
-    await saveText()
-    process.exit(0) // if you don't close yourself this will run forever
-});
+
