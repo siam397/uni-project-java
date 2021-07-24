@@ -49,7 +49,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     private String friendname;
     private WebSocket webSocket;
     private String SERVER_PATH="";
-
+    private String userInfo;
     public void setSERVER_PATH(String SERVER_PATH) {
         this.SERVER_PATH = SERVER_PATH;
     }
@@ -73,7 +73,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         System.out.println("this is name"+name);
         String baselink=url_2;
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-        String userInfo=sharedPreferences.getString("user","");
+        userInfo=sharedPreferences.getString("user","");
         setSERVER_PATH(baselink+friendId+","+userInfo);
         //needs to change
         friendname=getIntent().getStringExtra("username");
@@ -141,7 +141,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
                 try{
                     JSONObject jsonObject=new JSONObject(text);
                     Log.w("TAG", "onMessage: "+jsonObject.getString("name"));
-                    if(jsonObject.getString("name").equals(name)){
+                    if(jsonObject.getString("id").equals(userInfo)){
                         jsonObject.put("isSent",true);
                     }else{
                         jsonObject.put("isSent",false);
@@ -175,6 +175,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
                 try{
                     jsonObject.put("name",name);
                     jsonObject.put("message",messageEdit.getText().toString());
+                    jsonObject.put("id",userInfo);
                     webSocket.send(jsonObject.toString());
                     jsonObject.put("isSent",true);
                     messageAdapter.addItem(jsonObject);
@@ -228,6 +229,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         try{
             jsonObject.put("name", name);
             jsonObject.put("image", base64img);
+            jsonObject.put("id",userInfo);
             System.out.println("hocche");
             System.out.println("this is the one: "+base64img);
             webSocket.send(jsonObject.toString());

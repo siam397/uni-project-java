@@ -120,9 +120,9 @@ wsServer.on("request",(req)=>{
       var profile=await Profile.findOne({user_id:url2});
       var chatNameurl2=profile.username;
       if(objmes.message==null){
-        value1[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2}];
+        value1[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2,fromPersonId:objmes.id}];
       }else{
-        value1[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2}];
+        value1[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2,fromPersonId:objmes.id}];
       }
       
       firebaseRef.update(value1)
@@ -132,14 +132,15 @@ wsServer.on("request",(req)=>{
       const snapshot = await firebaseRef.once('value');
       var profile=await Profile.findOne({user_id:url2});
       var chatNameurl2=profile.username;
+      
       const value = snapshot.val();
       value[url1] = lodash.reject(value[url1],person=>{
         return person.id==url2
       })
       if(objmes.message==null){
-        value[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2},...value[url1]];
+        value[url1]=[{id:url2,profilePicture:url2Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl2,fromPersonId:objmes.id},...value[url1]];
       }else{
-        value[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2},...value[url1]];
+        value[url1]=[{id:url2,profilePicture:url2Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl2,fromPersonId:objmes.id},...value[url1]];
       }
       firebaseRef.update(value)
     }
@@ -149,10 +150,11 @@ wsServer.on("request",(req)=>{
       var value1={}
       var profile=await Profile.findOne({user_id:url1});
       var chatNameurl1=profile.username;
+      
       if(objmes.message==null){
-        value1[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1}];
+        value1[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1,fromPersonId:objmes.id}];
       }else{
-        value1[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1}];
+        value1[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1,fromPersonId:objmes.id}];
       }
       firebaseRef.update(value1)
       
@@ -165,9 +167,9 @@ wsServer.on("request",(req)=>{
         return person.id==url1
       })
       if(objmes.message==null){
-        value[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1},...value[url2]];
+        value[url2]=[{id:url1,profilePicture:url1Image,message:"faludaBoizzz9252image",name:objmes.name,toPerson:chatNameurl1,fromPersonId:objmes.id},...value[url2]];
       }else{
-        value[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1},...value[url2]];
+        value[url2]=[{id:url1,profilePicture:url1Image,message:objmes.message,name:objmes.name,toPerson:chatNameurl1,fromPersonId:objmes.id},...value[url2]];
       }
       firebaseRef.update(value)
     }

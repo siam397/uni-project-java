@@ -1,6 +1,8 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -45,16 +47,17 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
-
+        SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
+        String id = sharedPreferences.getString("user", "");
         holder.tv_name.setText(mData.get(position).getToPerson());
         if(mData.get(position).getMessage().equals("faludaBoizzz9252image")){
-            if(mData.get(position).getName().equals(mData.get(position).getToPerson())){
+            if(!mData.get(position).getFromPersonId().equals(id)){
                 holder.tv_text.setText("Image Received");
             }else{
                 holder.tv_text.setText("Image Sent");
             }
         } else{
-            if(mData.get(position).getName().equals(mData.get(position).getToPerson())){
+            if(!mData.get(position).getFromPersonId().equals(id)){
                 holder.tv_text.setText(mData.get(position).getMessage());
             }else{
                 String text="You: "+mData.get(position).getMessage();

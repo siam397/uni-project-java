@@ -6,14 +6,24 @@ public class Chatx {
     private String profilePicture;
     private String message;
     private String toPerson;
+    private String fromPersonId;
     public Chatx(){}
 
-    public Chatx(String id, String name, String profilePicture, String message, String toPerson) {
+    public Chatx(String id, String name, String profilePicture, String message, String toPerson, String fromPersonId) {
         this.id = id;
         this.name = name;
         this.profilePicture = profilePicture;
         this.message = message;
         this.toPerson = toPerson;
+        this.fromPersonId = fromPersonId;
+    }
+
+    public void setFromPersonId(String fromPersonId) {
+        this.fromPersonId = fromPersonId;
+    }
+
+    public String getFromPersonId() {
+        return fromPersonId;
     }
 
     public String getId() {
