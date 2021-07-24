@@ -163,6 +163,9 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         recyclerView=findViewById(R.id.recyclerview);
         messageAdapter=new MessageAdapter(getLayoutInflater());
         recyclerView.setAdapter(messageAdapter);
+        TextView friendNamee=findViewById(R.id.friend_name);
+        friendNamee.setText(friendname);
+        System.out.println(friendname);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         messageEdit.addTextChangedListener(this);
         sendbtn.setOnClickListener(new View.OnClickListener() {
