@@ -47,8 +47,7 @@ public class DiscoverFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    //........
+    
     public static DiscoverFragment newInstance(String param1, String param2) {
         DiscoverFragment fragment = new DiscoverFragment();
         Bundle args = new Bundle();
@@ -57,7 +56,6 @@ public class DiscoverFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    //........
 
 
     @Override
@@ -96,7 +94,6 @@ public class DiscoverFragment extends Fragment {
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myRecyclerView.setAdapter(recyclerViewAdapter);
 
-        //........
         searchBar = v.findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -106,6 +103,7 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                recyclerViewAdapter.filter(s);
 
             }
 
@@ -114,7 +112,6 @@ public class DiscoverFragment extends Fragment {
 
             }
         });
-        //........
 
 
         return v;

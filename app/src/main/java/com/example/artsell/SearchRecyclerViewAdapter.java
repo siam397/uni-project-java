@@ -1,6 +1,7 @@
 package com.example.artsell;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.artsell.models.Chatx;
 import com.example.artsell.models.SearchResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.aViewHolder> {
 
     Context mContext;
     List<SearchResult> mData;
+    List<SearchResult> mDataCopy;
 
     public SearchRecyclerViewAdapter(Context mContext, List<SearchResult> mData) {
         this.mContext = mContext;
         this.mData = mData;
+        this.mDataCopy = new ArrayList<>();
+        mDataCopy.addAll(mData);
     }
 
 
-    //.........
+
     @NonNull
     @Override
     public SearchRecyclerViewAdapter.aViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,7 +54,27 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
 
-    //........
+    public void filter(CharSequence charSequence){
+        List<SearchResult> tempArrayList = new ArrayList<>();
+        if (!TextUtils.isEmpty(charSequence)){
+            for (SearchResult searchResult: mData){
+                if (searchResult.getUsername().toLowerCase().contains(charSequence)){
+                    tempArrayList.add(searchResult);
+                }
+            }
+        }
+        else{
+            tempArrayList.addAll(mDataCopy);
+        }
+
+        mData.clear();
+        mData.addAll(tempArrayList);
+        notifyDataSetChanged();
+        tempArrayList.clear();
+    }
+
+
+
     public static class aViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_name;
         private TextView tv_bio;
