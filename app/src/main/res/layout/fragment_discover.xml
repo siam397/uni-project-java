@@ -7,12 +7,35 @@
     tools:context=".DiscoverFragment"
     android:background="#FFFFFF">
 
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="360dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/search_bg"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:ems="10"
+        android:fontFamily="@font/kievitotbold"
+        android:hint="Find someone..."
+        android:inputType="textPersonName"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="18dp" />
+
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/discover_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/discover_recyclerview"
-        />
+        android:layout_below="@+id/search_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp" />
+
 
 
 </RelativeLayout>
