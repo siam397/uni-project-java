@@ -1,9 +1,13 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,8 +39,7 @@ import java.util.Objects;
 public class ChatFragment extends Fragment {
 
     View v;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("users");
+
     private RecyclerView myRecyclerView;
     private List<Chatx> listTexts;
 
@@ -80,48 +84,68 @@ public class ChatFragment extends Fragment {
 
         // T E X T S
         listTexts = new ArrayList<>();
-        listTexts.add(new Chatx("1", "Noman", R.drawable.dp1, "bruh"));
-        listTexts.add(new Chatx("2", "Mamun", R.drawable.dp2, "lmao"));
-        listTexts.add(new Chatx("3", "Kalam", R.drawable.dp3, "no"));
-        listTexts.add(new Chatx("4", "Dr Strange", R.drawable.dp4, "A quick brown fox jumped over the lazy dog"));
-        listTexts.add(new Chatx("5", "Rahim Rahman", R.drawable.dp5, "bruhbruhbruhbruh"));
-        listTexts.add(new Chatx("6", "Karim Kahman", R.drawable.dp6, "How r u"));
-        listTexts.add(new Chatx("7", "Boring", R.drawable.dp7, "Computer Architecture"));
-        listTexts.add(new Chatx("8", "DJ", R.drawable.dp8, "SRE bad"));
-        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
-        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
-        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
+//        listTexts.add(new Chatx("1", "Noman", R.drawable.dp1, "bruh"));
+//        listTexts.add(new Chatx("2", "Mamun", R.drawable.dp2, "lmao"));
+//        listTexts.add(new Chatx("3", "Kalam", R.drawable.dp3, "no"));
+//        listTexts.add(new Chatx("4", "Dr Strange", R.drawable.dp4, "A quick brown fox jumped over the lazy dog"));
+//        listTexts.add(new Chatx("5", "Rahim Rahman", R.drawable.dp5, "bruhbruhbruhbruh"));
+//        listTexts.add(new Chatx("6", "Karim Kahman", R.drawable.dp6, "How r u"));
+//        listTexts.add(new Chatx("7", "Boring", R.drawable.dp7, "Computer Architecture"));
+//        listTexts.add(new Chatx("8", "DJ", R.drawable.dp8, "SRE bad"));
+//        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
+//        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
+//        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
+
+
+
+
         
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-//                String id=sharedPreferences.getString("user","");
-//                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//                Object s=map.get(id);
-//                System.out.println(id+" "+s.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-////                Log.i("TAG", "Failed to read value.", error.toException());
-//            }
-//        });
-        
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        myRecyclerView = (RecyclerView) v.findViewById(R.id.chat_recyclerview);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+        String id = preferences.getString("user", "");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(id);
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
+                List<Chatx> chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                ChatRecyclerViewAdapter mAdapter=new ChatRecyclerViewAdapter(getContext(),chatxList);
+                myRecyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(new ChatRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+//                        changeItem(position, "Clicked");
+                        Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
+                        intent.putExtra("id",chatxList.get(position).getId());
+                        intent.putExtra("username",chatxList.get(position).getToPerson());
+                        intent.putExtra("profilePicture",chatxList.get(position).getProfilePicture());
+                        getActivity().getBaseContext().startActivity(intent);
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_chat, container, false);
-        myRecyclerView = (RecyclerView) v.findViewById(R.id.chat_recyclerview);
-        ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(getContext(),listTexts);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myRecyclerView.setAdapter(recyclerViewAdapter);
         return v;
     }
+
 
 
 }
