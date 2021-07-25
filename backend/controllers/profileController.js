@@ -81,7 +81,9 @@ exports.getSuggestedUsers= async (req,res)=>{
                 list=[...listOfSuggestedPeople]
             }
         }
-        res.status(201).send(list)
+        res.status(201).send({
+            suggestedPeople:list
+        })
     }catch(e){
         res.status(501).send(e)
     }
