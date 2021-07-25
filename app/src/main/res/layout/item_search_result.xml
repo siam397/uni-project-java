@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_margin="0dp"
+    android:padding="0dp"
+    android:elevation="5dp"
+    android:background="@drawable/card_search_result"
+    android:id="@+id/search_item_id">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dp_search_result"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:src="@drawable/stalin"
+        app:civ_border_color="#fff"
+        app:civ_border_width="0dp" />
+
+    <TextView
+        android:id="@+id/name_search_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="12dp"
+        android:layout_toEndOf="@+id/dp_search_result"
+        android:fontFamily="@font/kievitotextrabold"
+        android:gravity="center_horizontal"
+        android:text="Search Result's Name"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/bio_search_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_search_result"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/dp_search_result"
+        android:fontFamily="@font/kievitotregular"
+        android:gravity="center_horizontal"
+        android:text="Search Result's Bio"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="15dp" />
+
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:background="#FFEB3B" />
+
+
+</RelativeLayout>
