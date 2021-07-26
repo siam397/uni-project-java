@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -32,7 +33,9 @@ public class DiscoverFragment extends Fragment {
     private List<SearchResult> listSearchResult;
     private EditText searchBar;
 
-
+    //Notification Count
+    public int notificationCount=0;
+    private TextView countString;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -125,7 +128,19 @@ public class DiscoverFragment extends Fragment {
 //            }
 //        });
 
-
+        //Notification badge activity
+        countString = (TextView) v.findViewById(R.id.notificationNumber);
+        countString.setText(""+notificationCount);
+        if (!(notificationCount>0)){
+            countString.setVisibility(View.GONE);
+        }else{
+            countString.setVisibility(View.VISIBLE);
+        }
+        
         return v;
     }
+
+
+
+
 }
