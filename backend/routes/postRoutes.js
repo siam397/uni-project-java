@@ -1,7 +1,7 @@
 const express=require("express");
 const userController=require("../controllers/userController")
 const profileController=require("../controllers/profileController")
-const friendsController=require("../controllers/friendController")
+const friendsController=require("../controllers/friendController");
 const router=express.Router();
 
 router.post("/login",userController.login);
@@ -14,5 +14,5 @@ router.post('/sendRequest',friendsController.sendRequest)
 router.post('/removeFriend',friendsController.removeFriend)
 router.post('/removeRequest',friendsController.removeRequest)
 router.post('/suggestedPeople',profileController.getSuggestedUsers)
-
+router.post('/getUsers',profileController.getUsers)
 module.exports=router;

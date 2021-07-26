@@ -109,10 +109,15 @@ public class ChatFragment extends Fragment {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
-                List<Chatx> chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                List<Chatx> chatxList=new ArrayList<>();
+                if(!dataSnapshot.getValue().equals("created")){
+                    System.out.println("here i am");
+                    GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
+                    chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                }
                 ChatRecyclerViewAdapter mAdapter=new ChatRecyclerViewAdapter(getContext(),chatxList);
                 myRecyclerView.setAdapter(mAdapter);
+                List<Chatx> finalChatxList = chatxList;
                 mAdapter.setOnItemClickListener(new ChatRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {

@@ -55,7 +55,7 @@ exports.acceptRequest=async (req,res)=>{
         // secondPerson.save();
         firstPersonFriends.save();
         secondPersonFriends.save();
-        res.status(201)
+        res.status(201).send("accepted")
     }catch(e){
         res.status(501).send(e)
     }
@@ -73,14 +73,19 @@ exports.sendRequest=async (req,res)=>{
         secondPersonFriends.friendRequests.push(firstPerson);
         firstPersonFriends.save();
         secondPersonFriends.save();
-        res.status(201)
+        res.status(201).send("sent")
     }catch(e){
         res.status(501).send(e)
     }
 }
 
 exports.removeRequest = async (req,res)=>{
-    removeFriendRequest(req.body.firstId,req.body.secondId);
+    try{
+        removeFriendRequest(req.body.firstId,req.body.secondId);
+        res.status(201).send("removed reuqest")
+    }catch(e){
+        res.status(501).send(e)
+    }
 }
 
 exports.removeFriend=async (req,res)=>{
@@ -88,7 +93,7 @@ exports.removeFriend=async (req,res)=>{
     const secondId=req.body.secondId;
     try{
         unfriend(firstId,secondId);
-        res.status(201)
+        res.status(201).send("removed friend")
     }catch(e){
         res.status(501).send(e)
     }
