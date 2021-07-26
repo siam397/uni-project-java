@@ -34,7 +34,7 @@ public class DiscoverFragment extends Fragment {
     private EditText searchBar;
 
     //Notification Count
-    public int notificationCount=0;
+    public int notificationCount=69;
     private TextView countString;
 
 
@@ -136,7 +136,7 @@ public class DiscoverFragment extends Fragment {
         }else{
             countString.setVisibility(View.VISIBLE);
         }
-        
+
         return v;
     }
 
