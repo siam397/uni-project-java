@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="400dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="8dp"
+    android:background="@drawable/card_search_result"
+    android:padding="15dp"
+    android:layout_gravity="center">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dp_dialogSearch"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_above="@+id/name_dialogSearch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/stalin"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="1dp" />
+
+
+    <TextView
+        android:id="@+id/name_dialogSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/kievitotextrabold"
+        android:gravity="center_horizontal"
+        android:text="Search's Name"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="30sp" />
+
+
+    <TextView
+        android:id="@+id/bio_dialogSearch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_dialogSearch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/kievitotitalic"
+        android:gravity="center"
+        android:text="Profile bio Profile bio Profile bio Profile bio"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btn_dialogSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:drawableLeft="@drawable/ic_add_user"
+        android:text="Add Friend"
+        android:fontFamily="@font/kievitotmedium"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="18dp"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bio_dialogSearch"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        app:backgroundTint="#F4FA3A"
+        />
+
+</RelativeLayout>

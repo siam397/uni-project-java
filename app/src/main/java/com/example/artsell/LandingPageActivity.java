@@ -48,6 +48,9 @@ public class LandingPageActivity extends AppCompatActivity {
                     case R.id.friends:
                         fragment = new FriendsFragment();
                         break;
+                    case R.id.discover:
+                        fragment = new DiscoverFragment();
+                        break;
                     case R.id.profile:
                         fragment = new ProfileFragment();
                         break;

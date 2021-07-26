@@ -20,6 +20,14 @@
         app:cnb_textColor="#363636"
         />
     <item
+        android:id="@+id/discover"
+        android:title="Discover"
+        android:icon="@drawable/ic_discover"
+        app:cnb_backgroundColor="#F4FA3A"
+        app:cnb_iconColor="#363636"
+        app:cnb_textColor="#363636"
+        />
+    <item
         android:id="@+id/profile"
         android:title="Profile"
         android:icon="@drawable/ic_user"
