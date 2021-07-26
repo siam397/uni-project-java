@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bgGray">#F5F5F5</color>
+
+
+    <color name="ChatColor">#2196F3</color>
+    <color name="FriendColor">#FA9345</color>
+    <color name="DiscoverColor">#FFEB3B</color>
+    <color name="ProfileColor">#F656DB</color>
 </resources>
