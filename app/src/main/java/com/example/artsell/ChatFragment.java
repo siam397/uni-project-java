@@ -95,11 +95,6 @@ public class ChatFragment extends Fragment {
 //        listTexts.add(new Chatx("9", "RJ", R.drawable.dp9, "Android Studio good"));
 //        listTexts.add(new Chatx("10", "CJ", R.drawable.dp10, "ok"));
 //        listTexts.add(new Chatx("11", "Bro fist", R.drawable.dp11, "asos"));
-
-
-
-
-        
     }
 
 
@@ -123,6 +118,7 @@ public class ChatFragment extends Fragment {
                     public void onItemClick(int position) {
 //                        changeItem(position, "Clicked");
                         Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("id",chatxList.get(position).getId());
                         intent.putExtra("username",chatxList.get(position).getToPerson());
                         intent.putExtra("profilePicture",chatxList.get(position).getProfilePicture());
