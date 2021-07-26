@@ -164,9 +164,9 @@ exports.getUsers=async (req,res)=>{
             username:people.username,
             bio:people.bio,
             profilePicture:customer[people.user_id],
-            friends:friends(userFriends,peopleFriends)?true:false,
-            sentFriendRequests:sentRequest(userFriends,peopleFriends)?true:false,
-            requested:requested(userFriends,peopleFriends)?true:false,
+            friends:friends(userFriends,people)?true:false,
+            sentFriendRequests:sentRequest(userFriends,people)?true:false,
+            requested:requested(userFriends,people)?true:false,
         }
         listOfEveryone.push(userInfo)
     }
