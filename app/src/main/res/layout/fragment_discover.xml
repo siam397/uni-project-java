@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,9 +8,10 @@
     tools:context=".DiscoverFragment"
     android:background="#FFFFFF">
 
+
     <EditText
         android:id="@+id/search_bar"
-        android:layout_width="240dp"
+        android:layout_width="325dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -36,6 +38,31 @@
         android:layout_marginTop="8dp" />
 
 
+    <ImageView
+        android:id="@+id/bell_icon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="18dp"
+        app:srcCompat="@drawable/ic_bell" />
+
+    <TextView
+        android:id="@+id/notificationNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/discover_recyclerview"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/badge"
+        android:fontFamily="@font/kievitotbold"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="12"
+        android:textAlignment="center"
+        android:textColor="@color/TextFont"
+        android:textSize="15sp" />
 
 </RelativeLayout>
 
