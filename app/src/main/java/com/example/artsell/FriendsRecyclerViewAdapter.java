@@ -65,6 +65,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
                         Intent intent=new Intent(mContext,ChatRoomActivity.class);
                         intent.putExtra("id",mData.get(vHolder.getAdapterPosition()).getUser_id());
                         intent.putExtra("username",mData.get(vHolder.getAdapterPosition()).getUsername());
+                        intent.putExtra("profilePicture",mData.get(vHolder.getAdapterPosition()).getProfilePicture());
                         mContext.startActivity(intent);
                     }
                 });

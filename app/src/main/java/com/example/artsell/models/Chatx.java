@@ -1,31 +1,68 @@
 package com.example.artsell.models;
 
 public class Chatx {
-    private String user_id;
-    private String username;
-    private int profilePicture;
-    private String lastText;
+    private String id;
+    private String name;
+    private String profilePicture;
+    private String message;
+    private String toPerson;
+    private String fromPersonId;
+    public Chatx(){}
 
-    public Chatx(String user_id, String username, int profilePicture, String lastText) {
-        this.user_id = user_id;
-        this.username = username;
+    public Chatx(String id, String name, String profilePicture, String message, String toPerson, String fromPersonId) {
+        this.id = id;
+        this.name = name;
         this.profilePicture = profilePicture;
-        this.lastText = lastText;
+        this.message = message;
+        this.toPerson = toPerson;
+        this.fromPersonId = fromPersonId;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public void setFromPersonId(String fromPersonId) {
+        this.fromPersonId = fromPersonId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFromPersonId() {
+        return fromPersonId;
     }
 
-    public int getProfilePicture() {
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getProfilePicture() {
         return profilePicture;
     }
 
-    public String getLastText() {
-        return lastText;
+    public String getMessage() {
+        return message;
+    }
+
+    public String getToPerson() {
+        return toPerson;
+    }
+
+    public void setToPerson(String toPerson) {
+        this.toPerson = toPerson;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

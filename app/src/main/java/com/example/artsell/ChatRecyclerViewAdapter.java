@@ -1,6 +1,11 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +24,13 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
 
     Context mContext;
     List<Chatx> mData;
-
-
+    private OnItemClickListener mListener;
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
     public ChatRecyclerViewAdapter(Context mContext, List<Chatx> mData) {
         this.mContext = mContext;
         this.mData = mData;
@@ -31,16 +41,33 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     public AnotherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(mContext).inflate(R.layout.item_chat, parent, false);
-        AnotherViewHolder vHolder = new AnotherViewHolder(v);
+        AnotherViewHolder vHolder = new AnotherViewHolder(v,mListener);
         return vHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull AnotherViewHolder holder, int position) {
+        SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
+        String id = sharedPreferences.getString("user", "");
+        holder.tv_name.setText(mData.get(position).getToPerson());
+        if(mData.get(position).getMessage().equals("faludaBoizzz9252image")){
+            if(!mData.get(position).getFromPersonId().equals(id)){
+                holder.tv_text.setText("Image Received");
+            }else{
+                holder.tv_text.setText("Image Sent");
+            }
+        } else{
+            if(!mData.get(position).getFromPersonId().equals(id)){
+                holder.tv_text.setText(mData.get(position).getMessage());
+            }else{
+                String text="You: "+mData.get(position).getMessage();
+                holder.tv_text.setText(text);
+            }
+        }
+        byte[] image= Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
+        Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+        holder.img.setImageBitmap(bitmap);
 
-        holder.tv_name.setText(mData.get(position).getUsername());
-        holder.tv_text.setText(mData.get(position).getLastText());
-        holder.img.setImageResource(mData.get(position).getProfilePicture());
     }
 
     @Override
@@ -53,12 +80,24 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
         private TextView tv_text;
         private ImageView img;
 
-        public AnotherViewHolder(@NonNull View itemView) {
+        public AnotherViewHolder(@NonNull View itemView,final OnItemClickListener listener) {
             super(itemView);
 
             tv_name = (TextView) itemView.findViewById(R.id.name_chat);
             tv_text = (TextView) itemView.findViewById(R.id.text_chat);
             img = (ImageView) itemView.findViewById(R.id.dp_chat);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
+
 }

@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,13 +49,13 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
     private String friendname;
     private WebSocket webSocket;
     private String SERVER_PATH="";
-
+    private String userInfo;
     public void setSERVER_PATH(String SERVER_PATH) {
         this.SERVER_PATH = SERVER_PATH;
     }
-
     private EditText messageEdit;
-    private TextView textView;
+    private String profilePicture;
+    private CircleImageView circleImageView;
     private RecyclerView recyclerView;
     private Button sendbtn;
     private String friendId;
@@ -67,16 +68,20 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         super.onCreate(savedInstanceState);
         friendId=getIntent().getStringExtra("id");
         setContentView(R.layout.activity_chat_room);
-        textView=findViewById(R.id.friend_name);
+        circleImageView=findViewById(R.id.profile_image);
         name=getIntent().getStringExtra("username");
         System.out.println("this is name"+name);
-        textView.setText(name);
         String baselink=url_2;
         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-        String userInfo=sharedPreferences.getString("user","");
+        userInfo=sharedPreferences.getString("user","");
         setSERVER_PATH(baselink+friendId+","+userInfo);
         //needs to change
         friendname=getIntent().getStringExtra("username");
+        profilePicture=getIntent().getStringExtra("profilePicture");
+        System.out.println(profilePicture);
+        byte[] image=Base64.decode(profilePicture,Base64.DEFAULT);
+        Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
+        circleImageView.setImageBitmap(bitmap);
         name=sharedPreferences.getString("username","");
         initiateSocketConnection();
     }
@@ -126,10 +131,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
 
-            runOnUiThread(()->{
-                Toast.makeText(ChatRoomActivity.this,"successful",Toast.LENGTH_SHORT).show();
-                initializeView();
-            });
+            runOnUiThread(ChatRoomActivity.this::initializeView);
         }
 
         @Override
@@ -139,7 +141,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
                 try{
                     JSONObject jsonObject=new JSONObject(text);
                     Log.w("TAG", "onMessage: "+jsonObject.getString("name"));
-                    if(jsonObject.getString("name").equals(name)){
+                    if(jsonObject.getString("id").equals(userInfo)){
                         jsonObject.put("isSent",true);
                     }else{
                         jsonObject.put("isSent",false);
@@ -161,6 +163,9 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         recyclerView=findViewById(R.id.recyclerview);
         messageAdapter=new MessageAdapter(getLayoutInflater());
         recyclerView.setAdapter(messageAdapter);
+        TextView friendNamee=findViewById(R.id.friend_name);
+        friendNamee.setText(friendname);
+        System.out.println(friendname);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         messageEdit.addTextChangedListener(this);
         sendbtn.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +175,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
                 try{
                     jsonObject.put("name",name);
                     jsonObject.put("message",messageEdit.getText().toString());
+                    jsonObject.put("id",userInfo);
                     webSocket.send(jsonObject.toString());
                     jsonObject.put("isSent",true);
                     messageAdapter.addItem(jsonObject);
@@ -223,6 +229,7 @@ public class ChatRoomActivity extends AppCompatActivity implements TextWatcher{
         try{
             jsonObject.put("name", name);
             jsonObject.put("image", base64img);
+            jsonObject.put("id",userInfo);
             System.out.println("hocche");
             System.out.println("this is the one: "+base64img);
             webSocket.send(jsonObject.toString());
