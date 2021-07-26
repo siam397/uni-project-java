@@ -164,9 +164,9 @@ exports.getUsers=async (req,res)=>{
             username:people.username,
             bio:people.bio,
             profilePicture:customer[people.user_id],
-            friends:friends(userFriends,peopleFriends)?true:false,
-            sentFriendRequests:sentRequest(userFriends,peopleFriends)?true:false,
-            requested:requested(userFriends,peopleFriends)?true:false,
+            friends:friends(userFriends,people)?true:false,
+            sentFriendRequests:sentRequest(userFriends,people)?true:false,
+            requested:requested(userFriends,people)?true:false,
         }
         listOfEveryone.push(userInfo)
     }
@@ -227,4 +227,13 @@ requested=(mainUser,friend)=>{
     return lodash.find(mainUser.friendRequests,function(o){
         return (o.user_id===friend.user_id)
     })
+}
+
+exports.updateProfilePicture=async (req,res)=>{
+    const id=req.body.ID;
+    const dp=req.body.DP;
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    customer[id]=dp
+    fs.writeFileSync('./profilePictures.json', JSON.stringify(customer))
 }

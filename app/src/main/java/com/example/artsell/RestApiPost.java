@@ -6,6 +6,7 @@ import com.example.artsell.models.GetUser;
 import com.example.artsell.models.LoginUser;
 import com.example.artsell.models.People;
 import com.example.artsell.models.Profile;
+import com.example.artsell.models.ResponseBody;
 import com.example.artsell.models.SignUser;
 import com.example.artsell.models.User;
 import com.example.artsell.models.UserID;
@@ -31,4 +32,12 @@ public interface RestApiPost {
     Call<User>getUser(@Body FriendID friendID);
     @POST("/getUsers")
     Call<People>getUsers(@Body UserID userID);
+    @POST("sendRequest")
+    Call<ResponseBody>sendRequest(@Body FriendID friendID);
+    @POST("addFriend")
+    Call<ResponseBody>addFriend(@Body FriendID friendID);
+    @POST("removeFriend")
+    Call<ResponseBody>removeFriend(@Body FriendID friendID);
+    @POST("removeRequest")
+    Call<ResponseBody>removeRequest(@Body FriendID friendID);
 }

@@ -67,44 +67,64 @@
         app:backgroundTint="#F4FA3A"
         />
 
-<!--    <Button-->
-<!--        android:id="@+id/sentRequest"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingLeft="20dp"-->
-<!--        android:paddingRight="20dp"-->
-<!--        android:drawableLeft="@drawable/ic_add_user"-->
-<!--        android:text="Request Sent"-->
-<!--        android:fontFamily="@font/kievitotmedium"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="#363636"-->
-<!--        android:textSize="18dp"-->
-<!--        android:elevation="5dp"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_below="@+id/bio_dialogSearch"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:background="@drawable/rounded_edittext"-->
-<!--        app:backgroundTint="#F4FA3A"-->
-<!--        />-->
-<!--    <Button-->
-<!--        android:id="@+id/request"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingLeft="20dp"-->
-<!--        android:paddingRight="20dp"-->
-<!--        android:drawableLeft="@drawable/ic_add_user"-->
-<!--        android:text="Accept"-->
-<!--        android:fontFamily="@font/kievitotmedium"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="#363636"-->
-<!--        android:textSize="18dp"-->
-<!--        android:elevation="5dp"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_below="@+id/bio_dialogSearch"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:background="@drawable/rounded_edittext"-->
-<!--        app:backgroundTint="#F4FA3A"-->
-<!--        />-->
+    <Button
+        android:id="@+id/sentRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:drawableLeft="@drawable/ic_add_user"
+        android:text="Request Sent"
+        android:fontFamily="@font/kievitotmedium"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="18dp"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bio_dialogSearch"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        app:backgroundTint="#F4FA3A"
+        />
+    <Button
+        android:id="@+id/request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:drawableLeft="@drawable/ic_add_user"
+        android:text="Pending"
+        android:fontFamily="@font/kievitotmedium"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="18dp"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bio_dialogSearch"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        app:backgroundTint="#F4FA3A"
+        />
+    <Button
+        android:id="@+id/chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:drawableLeft="@drawable/ic_chaticon"
+        android:text="Chat"
+        android:fontFamily="@font/kievitotmedium"
+        android:textAllCaps="false"
+        android:textColor="#363636"
+        android:textSize="18dp"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bio_dialogSearch"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        app:backgroundTint="#F4FA3A"
+        />
+
 
 
 </RelativeLayout>

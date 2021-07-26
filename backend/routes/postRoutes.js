@@ -15,4 +15,6 @@ router.post('/removeFriend',friendsController.removeFriend)
 router.post('/removeRequest',friendsController.removeRequest)
 router.post('/suggestedPeople',profileController.getSuggestedUsers)
 router.post('/getUsers',profileController.getUsers)
+router.post('/getRequests',friendsController.getRequests)
+router.post('/updateProfilePicture',profileController.updateProfilePicture)
 module.exports=router;

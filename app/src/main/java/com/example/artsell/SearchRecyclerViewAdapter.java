@@ -28,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.artsell.models.Chatx;
 import com.example.artsell.models.FriendID;
 import com.example.artsell.models.GetFriends;
+import com.example.artsell.models.People;
 import com.example.artsell.models.Profile;
+import com.example.artsell.models.ResponseBody;
 import com.example.artsell.models.SearchResult;
 import com.example.artsell.models.User;
 import com.example.artsell.models.UserID;
@@ -52,6 +54,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     //    OnItemClickListener onItemClickListener;
     Dialog myDialog;
     List<User>xxx;
+    Retrofit retrofit= Variables.initializeRetrofit();
 
     public SearchRecyclerViewAdapter(Context mContext, List<User> mData, List<User>mDataCopy) {
         this.mContext = mContext;
@@ -89,8 +92,118 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                               dialog_dp.setImageBitmap(bitmap);
                                                               SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
                                                               String id = sharedPreferences.getString("user", "");
+                                                              Button addFriend=myDialog.findViewById(R.id.btn_dialogSearch);
+                                                              Button sentRequest=myDialog.findViewById(R.id.sentRequest);
+                                                              Button request=myDialog.findViewById(R.id.request);
+                                                              Button chat=myDialog.findViewById(R.id.chat);
+                                                              if(mData.get(vHolder.getAdapterPosition()).isFriends()){
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.VISIBLE);
+                                                              }if(mData.get(vHolder.getAdapterPosition()).isSentFriendRequests()){
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.VISIBLE);
+                                                              }if(mData.get(vHolder.getAdapterPosition()).isRequested()){
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.VISIBLE);
+                                                              }if(!mData.get(vHolder.getAdapterPosition()).isRequested() &&
+                                                                !mData.get(vHolder.getAdapterPosition()).isSentFriendRequests() &&
+                                                                      !mData.get(vHolder.getAdapterPosition()).isFriends()
+                                                              ){
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.VISIBLE);
+                                                              }
+                                                              if(id.equals(mData.get(vHolder.getAdapterPosition()).getUser_id())){
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                              }
 
-//                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                                                              addFriend.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.sendRequest(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.INVISIBLE);
+                                                                              chat.setVisibility(View.INVISIBLE);
+                                                                              sentRequest.setVisibility(View.VISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              request.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.addFriend(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.INVISIBLE);
+                                                                              chat.setVisibility(View.VISIBLE);
+                                                                              sentRequest.setVisibility(View.INVISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              sentRequest.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.removeRequest(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.VISIBLE);
+                                                                              chat.setVisibility(View.INVISIBLE);
+                                                                              sentRequest.setVisibility(View.INVISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              chat.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      Intent intent=new Intent(mContext,ChatRoomActivity.class);
+                                                                      intent.putExtra("id",mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      intent.putExtra("username",mData.get(vHolder.getAdapterPosition()).getUsername());
+                                                                      intent.putExtra("profilePicture",mData.get(vHolder.getAdapterPosition()).getProfilePicture());
+                                                                      mContext.startActivity(intent);
+                                                                  }
+                                                              });
                                                               myDialog.show();
                                                           }
                                                       }
