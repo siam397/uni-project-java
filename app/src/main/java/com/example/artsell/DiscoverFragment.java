@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -19,8 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artsell.models.Chatx;
+import com.example.artsell.models.People;
 import com.example.artsell.models.Profile;
 import com.example.artsell.models.SearchResult;
+import com.example.artsell.models.User;
+import com.example.artsell.models.UserID;
 import com.example.artsell.utilities.Variables;
 
 import java.io.IOException;
@@ -98,53 +102,57 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         v = inflater.inflate(R.layout.fragment_discover, container,  false);
+        LinearLayout linlaHeaderProgress = (LinearLayout) v.findViewById(R.id.linlaHeaderProgress);
+        linlaHeaderProgress.setVisibility(View.VISIBLE);
         Retrofit retrofit= Variables.initializeRetrofit();
+        RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+        SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+        String id = preferences.getString("user", "");
+        UserID userID=new UserID(id);
         RestApiGet restApiGet=retrofit.create(RestApiGet.class);
-        Call<List<Profile>> call=restApiGet.getUsers();
-                call.enqueue(new Callback<List<Profile>>() {
+        Call<People> call=restApiPost.getUsers(userID);
+        call.enqueue(new Callback<People>() {
+            @Override
+            public void onResponse(Call<People> call, Response<People> response) {
+                if(!response.isSuccessful()){
+                    System.out.println("hoilo na re");
+                    return;
+                }
+                System.out.println(response.body().geteveryoneList().get(0).getUsername());
+                myRecyclerView = (RecyclerView) v.findViewById(R.id.discover_recyclerview);
+                SearchRecyclerViewAdapter recyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),response.body().getsuggestedPeople(),response.body().geteveryoneList());
+                myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                linlaHeaderProgress.setVisibility(View.INVISIBLE);
+                myRecyclerView.setAdapter(recyclerViewAdapter);
+
+                // SEARCH BAR
+                searchBar = v.findViewById(R.id.search_bar);
+                searchBar.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void onResponse(Call<List<Profile>> call, Response<List<Profile>> response) {
-                        if(!response.isSuccessful()){
-                            System.out.println("hoilo na re");
-                            return;
-                        }
-                        List<Profile>listSearchResult=response.body();
-                        System.out.println(response.body());
-                        myRecyclerView = (RecyclerView) v.findViewById(R.id.discover_recyclerview);
-                        SearchRecyclerViewAdapter recyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),listSearchResult);
-                        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        myRecyclerView.setAdapter(recyclerViewAdapter);
-
-                        // SEARCH BAR
-                        searchBar = v.findViewById(R.id.search_bar);
-                        searchBar.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                recyclerViewAdapter.filter(s);
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-
-                            }
-                        });
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                     }
 
                     @Override
-                    public void onFailure(Call<List<Profile>> call, Throwable t) {
-                        System.out.println(t.getMessage());
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        recyclerViewAdapter.filter(s);
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
                     }
                 });
+            }
 
+            @Override
+            public void onFailure(Call<People> call, Throwable t) {
 
+            }
+        });
 
 
         // CLICK ON ITEM

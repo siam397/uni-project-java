@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class People {
-    List<User>suggestedPeople=new ArrayList<>();
-    List<User>everyoneList=new ArrayList<>();
+    List<User>suggestedPeople;
+    List<User>everyoneList;
 
     public People(List<User> suggestedPeople, List<User> everyoneList) {
         this.suggestedPeople = suggestedPeople;

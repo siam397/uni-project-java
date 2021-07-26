@@ -29,4 +29,6 @@ public interface RestApiPost {
     Call<People>getEveryone(@Body UserID id);
     @POST("getRandomUser")
     Call<User>getUser(@Body FriendID friendID);
+    @POST("/getUsers")
+    Call<People>getUsers(@Body UserID userID);
 }

@@ -101,7 +101,6 @@ exports.getSuggestedUsers= async (req,res)=>{
             }
             list=[...listOfSuggestedPeople]
         }
-        console.log(list)
         res.status(201).send({
             suggestedPeople:list
         })
@@ -110,6 +109,72 @@ exports.getSuggestedUsers= async (req,res)=>{
     }
 }
 
+
+
+exports.getUsers=async (req,res)=>{
+    const id=req.body.ID;
+    const userFriends = await Friends.findOne({user_id : id});
+    var peopleFriends;
+    let userInfo;
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    var list=[];
+    var listOfEveryone=[];
+    list=[...await bfs(id)]
+    if(list.length===0){
+        for(const people of await Profile.find()){
+            peopleFriends = await Friends.findOne({user_id : people.user_id});
+            if(people.user_id!==id && !friends(userFriends,peopleFriends) && !sentRequest(userFriends,peopleFriends) && !requested(userFriends,peopleFriends)){
+                userInfo={
+                    _id:people._id,
+                    user_id:people.user_id,
+                    username:people.username,
+                    bio:people.bio,
+                    profilePicture:customer[people.user_id],
+                    friends:false,
+                    sentFriendRequests:false,
+                    requested:false,
+                }
+                list.push(userInfo)
+            }
+        }
+    }else{
+        var people;
+        var listOfSuggestedPeople=[]
+            for(const userId of list){
+                people=await Profile.findOne({user_id:userId})
+                listOfSuggestedPeople.push({
+                    _id:people._id,
+                    user_id:people.user_id,
+                    username:people.username,
+                    bio:people.bio,
+                    profilePicture:customer[userId],
+                    friends:false,
+                    sentFriendRequests:false,
+                    requested:false,
+                })
+                
+            }
+            list=[...listOfSuggestedPeople]
+    }
+    for(const people of await Profile.find()){
+        userInfo={
+            _id:people._id,
+            user_id:people.user_id,
+            username:people.username,
+            bio:people.bio,
+            profilePicture:customer[people.user_id],
+            friends:friends(userFriends,peopleFriends)?true:false,
+            sentFriendRequests:sentRequest(userFriends,peopleFriends)?true:false,
+            requested:requested(userFriends,peopleFriends)?true:false,
+        }
+        listOfEveryone.push(userInfo)
+    }
+    res.status(201).send({
+        suggestedPeople:list,
+        everyoneList:listOfEveryone
+    })
+}
 
 
 
