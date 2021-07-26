@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -46,16 +47,18 @@ import retrofit2.Retrofit;
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.aViewHolder> {
 
     Context mContext;
-    List<Profile> mData;
-    List<Profile> mDataCopy;
+    List<User> mData;
+    List<User> mDataCopy;
     //    OnItemClickListener onItemClickListener;
     Dialog myDialog;
+    List<User>xxx;
 
-    public SearchRecyclerViewAdapter(Context mContext, List<Profile> mData) {
+    public SearchRecyclerViewAdapter(Context mContext, List<User> mData, List<User>mDataCopy) {
         this.mContext = mContext;
         this.mData = mData;
-        this.mDataCopy = new ArrayList<>();
-        mDataCopy.addAll(mData);
+        this.mDataCopy = mDataCopy;
+        this.xxx = new ArrayList<>();
+        xxx.addAll(mData);
     }
 
 
@@ -76,62 +79,19 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         vHolder.item_search_result.setOnClickListener(new View.OnClickListener() {
                                                           @Override
                                                           public void onClick(View v) {
-                                                              myDialog.show();
-                                                              SharedPreferences preferences = mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
-                                                              String id = preferences.getString("user", "");
-                                                              Retrofit retrofit= Variables.initializeRetrofit();
-                                                              RestApiPost restApiPost=retrofit.create(RestApiPost.class);
-                                                              String id2=mData.get(vHolder.getAdapterPosition()).getUser_id();
-                                                              FriendID friendID=new FriendID(id,id2);
-                                                              Call<User> call=restApiPost.getUser(friendID);
-                                                              call.enqueue(new Callback<User>() {
-                                                                  @Override
-                                                                  public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
-                                                                      if(!response.isSuccessful()){
-                                                                          System.out.println("nope");
-                                                                          return;
-                                                                      }
-                                                                      User res=response.body();
-                                                                      TextView dialog_name = (TextView) myDialog.findViewById(R.id.name_dialogSearch);
-                                                                      TextView dialog_bio = (TextView) myDialog.findViewById(R.id.bio_dialogSearch);
-                                                                      ImageView dialog_dp = (ImageView) myDialog.findViewById(R.id.dp_dialogSearch);
-                                                                      dialog_name.setText(res.getUsername());
-                                                                      dialog_bio.setText(res.getBio());
-                                                                      byte[] image=Base64.decode(res.getProfilePicture(),Base64.DEFAULT);
-                                                                      Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
-                                                                      SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
-                                                                      dialog_dp.setImageBitmap(bitmap);
-                                                                      Button btn = myDialog.findViewById(R.id.btn_dialogSearch);
-//                                                              System.out.println(id+" "+mData.get(vHolder.getAdapterPosition()).getUser_id());
-                                                                      if(id.equals(res.getUser_id())){
-                                                                          btn.setAlpha(.5f);
-                                                                          btn.setEnabled(false);
-                                                                      }else{
-                                                                          btn.setEnabled(true);
-                                                                          btn.setAlpha(1);
-                                                                      }
-                                                                      btn.setOnClickListener(new View.OnClickListener() {
-                                                                          @Override
-                                                                          public void onClick(View v) {
-//                                                                      Intent intent = new Intent(mContext, ChatRoomActivity.class);
-//                                                                      intent.putExtra("id", mData.get(vHolder.getAdapterPosition()).getUser_id());
-//                                                                      intent.putExtra("username", mData.get(vHolder.getAdapterPosition()).getUsername());
-//                                                                      mContext.startActivity(intent);
-                                                                              System.out.println("clicked");
-                                                                          }
-                                                                      });
+                                                              TextView dialog_name = (TextView) myDialog.findViewById(R.id.name_dialogSearch);
+                                                              TextView dialog_bio = (TextView) myDialog.findViewById(R.id.bio_dialogSearch);
+                                                              ImageView dialog_dp = (ImageView) myDialog.findViewById(R.id.dp_dialogSearch);
+                                                              dialog_name.setText(mData.get(vHolder.getAdapterPosition()).getUsername());
+                                                              dialog_bio.setText(mData.get(vHolder.getAdapterPosition()).getBio());
+                                                              byte[] image= Base64.decode(mData.get(vHolder.getAdapterPosition()).getProfilePicture(),Base64.DEFAULT);
+                                                              Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+                                                              dialog_dp.setImageBitmap(bitmap);
+                                                              SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+                                                              String id = sharedPreferences.getString("user", "");
+
 //                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-
-
-                                                                  }
-                                                                  @Override
-                                                                  public void onFailure(@NotNull Call<User> call, Throwable t) {
-                                                                      System.out.println(t.getMessage());
-                                                                  }
-
-                                                              });
-
-
+                                                              myDialog.show();
                                                           }
                                                       }
 
@@ -157,17 +117,16 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
 
     public void filter(CharSequence charSequence) {
-        List<Profile> tempArrayList = new ArrayList<>();
+        List<User> tempArrayList = new ArrayList<>();
         if (!TextUtils.isEmpty(charSequence)) {
-            for (Profile profile : mData) {
+            for (User profile : mDataCopy) {
                 if (profile.getUsername().toLowerCase().contains(charSequence)) {
                     tempArrayList.add(profile);
                 }
             }
         } else {
-            tempArrayList.addAll(mDataCopy);
+            tempArrayList.addAll(xxx);
         }
-
         mData.clear();
         mData.addAll(tempArrayList);
         notifyDataSetChanged();
