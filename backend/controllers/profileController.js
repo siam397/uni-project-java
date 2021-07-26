@@ -228,3 +228,12 @@ requested=(mainUser,friend)=>{
         return (o.user_id===friend.user_id)
     })
 }
+
+exports.updateProfilePicture=async (req,res)=>{
+    const id=req.body.ID;
+    const dp=req.body.DP;
+    const jsonString = fs.readFileSync('./profilePictures.json')
+    var customer = JSON.parse(jsonString)
+    customer[id]=dp
+    fs.writeFileSync('./profilePictures.json', JSON.stringify(customer))
+}

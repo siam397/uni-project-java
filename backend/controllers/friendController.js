@@ -111,6 +111,16 @@ exports.removeFriend=async (req,res)=>{
     }
 }
 
+exports.getRequests=async(req,res)=>{
+    const id=req.body.ID;
+    try{
+        const requests=await Friends.findOne({user_id:id});
+        res.status(201).send(requests.friendRequests)
+    }catch(e){
+        res.status(420).send(e)
+    }
+}
+
 
 removeFriendRequest=async (firstId,secondId)=>{
     const firstPersonFriends=await Friends.findOne({user_id:firstId});

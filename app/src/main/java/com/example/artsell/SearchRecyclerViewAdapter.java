@@ -126,8 +126,6 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                   addFriend.setVisibility(View.INVISIBLE);
                                                                   chat.setVisibility(View.INVISIBLE);
                                                               }
-//                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-
 
                                                               addFriend.setOnClickListener(new View.OnClickListener() {
                                                                   @Override
