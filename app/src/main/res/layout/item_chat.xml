@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="2dp"
-    android:elevation="3dp"
+    android:elevation="0dp"
+    android:layout_margin="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card_chat"
@@ -51,5 +52,13 @@
         android:textAllCaps="false"
         android:textColor="#363636"
         android:textSize="13dp" />
+
+    <View
+        android:layout_width="360dp"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dp_chat"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/ChatColor" />
 
 </RelativeLayout>

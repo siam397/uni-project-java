@@ -4,7 +4,7 @@
     android:layout_height="400dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="8dp"
-    android:background="@drawable/card_search_result"
+    android:background="@drawable/dialog_search_result"
     android:padding="15dp"
     android:layout_gravity="center">
 

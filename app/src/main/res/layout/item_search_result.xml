@@ -57,12 +57,12 @@
         android:textSize="15dp" />
 
     <View
-        android:layout_width="300dp"
+        android:layout_width="360dp"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp"
-        android:background="#FFEB3B" />
+        android:background="@color/DiscoverColor" />
 
 
 </RelativeLayout>
