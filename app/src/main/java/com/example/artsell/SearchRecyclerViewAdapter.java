@@ -1,11 +1,21 @@
 package com.example.artsell;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +32,8 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     Context mContext;
     List<SearchResult> mData;
     List<SearchResult> mDataCopy;
+    //    OnItemClickListener onItemClickListener;
+    Dialog myDialog;
 
     public SearchRecyclerViewAdapter(Context mContext, List<SearchResult> mData) {
         this.mContext = mContext;
@@ -31,13 +43,51 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
 
-
     @NonNull
     @Override
     public SearchRecyclerViewAdapter.aViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(mContext).inflate(R.layout.item_search_result, parent, false);
-        SearchRecyclerViewAdapter.aViewHolder vHolder = new SearchRecyclerViewAdapter.aViewHolder(v);
+        aViewHolder vHolder = new SearchRecyclerViewAdapter.aViewHolder(v);
+
+
+
+        //Dialog initialization
+        myDialog = new Dialog(mContext);
+        myDialog.setContentView(R.layout.dialogbox_searchresult);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Button btn = myDialog.findViewById(R.id.btn_dialogSearch);
+        vHolder.item_search_result.setOnClickListener(new View.OnClickListener() {
+                                                          @Override
+                                                          public void onClick(View v) {
+                                                              TextView dialog_name = (TextView) myDialog.findViewById(R.id.name_dialogSearch);
+                                                              TextView dialog_bio = (TextView) myDialog.findViewById(R.id.bio_dialogSearch);
+                                                              ImageView dialog_dp = (ImageView) myDialog.findViewById(R.id.dp_dialogSearch);
+                                                              dialog_name.setText(mData.get(vHolder.getAdapterPosition()).getUsername());
+                                                              dialog_bio.setText(mData.get(vHolder.getAdapterPosition()).getBio());
+                                                              dialog_dp.setImageResource(mData.get(vHolder.getAdapterPosition()).getProfilePicture());
+//                byte[] image= Base64.decode(mData.get(vHolder.getAdapterPosition()).getProfilePicture(),Base64.DEFAULT);
+//                Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+//
+//                dialog_dp.setImageBitmap(bitmap);
+                                                              Button btn = myDialog.findViewById(R.id.btn_dialogSearch);
+                                                              btn.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      Intent intent = new Intent(mContext, ChatRoomActivity.class);
+                                                                      intent.putExtra("id", mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      intent.putExtra("username", mData.get(vHolder.getAdapterPosition()).getUsername());
+                                                                      mContext.startActivity(intent);
+                                                                  }
+                                                              });
+//                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                                                              myDialog.show();
+                                                          }
+                                                      }
+
+        );
+        //..............
+
         return vHolder;
     }
 
@@ -54,16 +104,15 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
 
-    public void filter(CharSequence charSequence){
+    public void filter(CharSequence charSequence) {
         List<SearchResult> tempArrayList = new ArrayList<>();
-        if (!TextUtils.isEmpty(charSequence)){
-            for (SearchResult searchResult: mData){
-                if (searchResult.getUsername().toLowerCase().contains(charSequence)){
+        if (!TextUtils.isEmpty(charSequence)) {
+            for (SearchResult searchResult : mData) {
+                if (searchResult.getUsername().toLowerCase().contains(charSequence)) {
                     tempArrayList.add(searchResult);
                 }
             }
-        }
-        else{
+        } else {
             tempArrayList.addAll(mDataCopy);
         }
 
@@ -74,8 +123,20 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
 
+    //.............
+//    public interface OnItemClickListener{
+//        void onClick(int position);
+//    }
+    //.............
+    //.............
+//    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+//        this.onItemClickListener = onItemClickListener;
+//    }
+    //.............
 
-    public static class aViewHolder extends RecyclerView.ViewHolder {
+
+    public class aViewHolder extends RecyclerView.ViewHolder {
+        private RelativeLayout item_search_result;
         private TextView tv_name;
         private TextView tv_bio;
         private ImageView img;
@@ -86,6 +147,15 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
             tv_name = (TextView) itemView.findViewById(R.id.name_search_result);
             tv_bio = (TextView) itemView.findViewById(R.id.bio_search_result);
             img = (ImageView) itemView.findViewById(R.id.dp_search_result);
+            item_search_result = (RelativeLayout) itemView.findViewById(R.id.search_item_id);
+            //.......
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onItemClickListener.onClick(getAdapterPosition());
+//                }
+//            });
+            //.......
         }
     }
 }

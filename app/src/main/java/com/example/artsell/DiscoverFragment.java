@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -85,6 +86,7 @@ public class DiscoverFragment extends Fragment {
         listSearchResult.add(new SearchResult("1", "Tamim Iqbal", R.drawable.dp4, "Wish me on 29th Feb | Pisces"));
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class DiscoverFragment extends Fragment {
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myRecyclerView.setAdapter(recyclerViewAdapter);
 
+        // SEARCH BAR
         searchBar = v.findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,6 +115,15 @@ public class DiscoverFragment extends Fragment {
 
             }
         });
+
+
+        // CLICK ON ITEM
+//        recyclerViewAdapter.setOnItemClickListener(new SearchRecyclerViewAdapter.OnItemClickListener() {
+//            @Override
+//            public void onClick(int position) {
+//                Toast.makeText(getActivity(), "Position is: "+position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         return v;
