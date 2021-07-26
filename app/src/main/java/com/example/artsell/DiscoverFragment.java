@@ -19,11 +19,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artsell.models.Chatx;
+import com.example.artsell.models.Profile;
 import com.example.artsell.models.SearchResult;
+import com.example.artsell.utilities.Variables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class DiscoverFragment extends Fragment {
 
@@ -68,22 +76,22 @@ public class DiscoverFragment extends Fragment {
         }
 
         // S E A R C H  R E S U L T
-        listSearchResult = new ArrayList<>();
-        listSearchResult.add(new SearchResult("1", "Noman", R.drawable.dp1, "bruh"));
-        listSearchResult.add(new SearchResult("1", "Abdul", R.drawable.dp2, "fghfhfhgfh"));
-        listSearchResult.add(new SearchResult("1", "Bokor", R.drawable.dp3, "sdfsfdsfdsfd"));
-        listSearchResult.add(new SearchResult("1", "Chomon", R.drawable.dp4, "   WOW"));
-        listSearchResult.add(new SearchResult("1", "Dakaat", R.drawable.dp5, "llllllllll"));
-        listSearchResult.add(new SearchResult("1", "EEE", R.drawable.dp6, "BBBBB"));
-        listSearchResult.add(new SearchResult("1", "REEEEE", R.drawable.dp7, "RRRRR"));
-        listSearchResult.add(new SearchResult("1", "SHEEESH", R.drawable.dp8, "UUUUU"));
-        listSearchResult.add(new SearchResult("1", "Nantu", R.drawable.dp9, "HHHHH"));
-        listSearchResult.add(new SearchResult("1", "Najibullah", R.drawable.dp10, "HHHHH"));
-        listSearchResult.add(new SearchResult("1", "Nhentai", R.drawable.dp11, "yes"));
-        listSearchResult.add(new SearchResult("1", "Y Combinator", R.drawable.dp1, "no"));
-        listSearchResult.add(new SearchResult("1", "Z dragon ball", R.drawable.dp2, "very good"));
-        listSearchResult.add(new SearchResult("1", "Kulasekara", R.drawable.dp3, "Hustle and Grind 24/7"));
-        listSearchResult.add(new SearchResult("1", "Tamim Iqbal", R.drawable.dp4, "Wish me on 29th Feb | Pisces"));
+//        listSearchResult = new ArrayList<>();
+//        listSearchResult.add(new SearchResult("1", "Noman", R.drawable.dp1, "bruh"));
+//        listSearchResult.add(new SearchResult("1", "Abdul", R.drawable.dp2, "fghfhfhgfh"));
+//        listSearchResult.add(new SearchResult("1", "Bokor", R.drawable.dp3, "sdfsfdsfdsfd"));
+//        listSearchResult.add(new SearchResult("1", "Chomon", R.drawable.dp4, "   WOW"));
+//        listSearchResult.add(new SearchResult("1", "Dakaat", R.drawable.dp5, "llllllllll"));
+//        listSearchResult.add(new SearchResult("1", "EEE", R.drawable.dp6, "BBBBB"));
+//        listSearchResult.add(new SearchResult("1", "REEEEE", R.drawable.dp7, "RRRRR"));
+//        listSearchResult.add(new SearchResult("1", "SHEEESH", R.drawable.dp8, "UUUUU"));
+//        listSearchResult.add(new SearchResult("1", "Nantu", R.drawable.dp9, "HHHHH"));
+//        listSearchResult.add(new SearchResult("1", "Najibullah", R.drawable.dp10, "HHHHH"));
+//        listSearchResult.add(new SearchResult("1", "Nhentai", R.drawable.dp11, "yes"));
+//        listSearchResult.add(new SearchResult("1", "Y Combinator", R.drawable.dp1, "no"));
+//        listSearchResult.add(new SearchResult("1", "Z dragon ball", R.drawable.dp2, "very good"));
+//        listSearchResult.add(new SearchResult("1", "Kulasekara", R.drawable.dp3, "Hustle and Grind 24/7"));
+//        listSearchResult.add(new SearchResult("1", "Tamim Iqbal", R.drawable.dp4, "Wish me on 29th Feb | Pisces"));
     }
 
 
@@ -91,30 +99,52 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_discover, container,  false);
-        myRecyclerView = (RecyclerView) v.findViewById(R.id.discover_recyclerview);
-        SearchRecyclerViewAdapter recyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),listSearchResult);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myRecyclerView.setAdapter(recyclerViewAdapter);
+        Retrofit retrofit= Variables.initializeRetrofit();
+        RestApiGet restApiGet=retrofit.create(RestApiGet.class);
+        Call<List<Profile>> call=restApiGet.getUsers();
+                call.enqueue(new Callback<List<Profile>>() {
+                    @Override
+                    public void onResponse(Call<List<Profile>> call, Response<List<Profile>> response) {
+                        if(!response.isSuccessful()){
+                            System.out.println("hoilo na re");
+                            return;
+                        }
+                        List<Profile>listSearchResult=response.body();
+                        System.out.println(response.body());
+                        myRecyclerView = (RecyclerView) v.findViewById(R.id.discover_recyclerview);
+                        SearchRecyclerViewAdapter recyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),listSearchResult);
+                        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        myRecyclerView.setAdapter(recyclerViewAdapter);
 
-        // SEARCH BAR
-        searchBar = v.findViewById(R.id.search_bar);
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // SEARCH BAR
+                        searchBar = v.findViewById(R.id.search_bar);
+                        searchBar.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                recyclerViewAdapter.filter(s);
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                recyclerViewAdapter.filter(s);
 
-            }
+                            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                            @Override
+                            public void afterTextChanged(Editable s) {
 
-            }
-        });
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Profile>> call, Throwable t) {
+                        System.out.println(t.getMessage());
+                    }
+                });
+
+
 
 
         // CLICK ON ITEM

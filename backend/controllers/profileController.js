@@ -26,6 +26,7 @@ exports.getProfileInfo=(req,res)=>{
 exports.getAnotherUser=async (req,res)=>{
     const firstId=req.body.firstId;
     const secondId=req.body.secondId;
+    console.log(firstId,secondId)
     const randomUser = await Profile.findOne({user_id:secondId})
     const firstPerson = await Profile.findOne({user_id:firstId})
     const firstPersonFriends = await Friends.findOne({user_id:firstId})
@@ -60,10 +61,11 @@ exports.getAnotherUser=async (req,res)=>{
 
 
 exports.getSuggestedUsers= async (req,res)=>{
-    const id=req.body.id;
+    const id=req.body.ID;
     const userFriends = await Friends.findOne({user_id : id});
     var peopleFriends;
     const user = await Profile.findOne({user_id : id});
+    let userInfo;
     var list=[];
     let listOfSuggestedPeople=[];
     try{
@@ -72,15 +74,34 @@ exports.getSuggestedUsers= async (req,res)=>{
             for(const people of await Profile.find()){
                 peopleFriends = await Friends.findOne({user_id : people.user_id});
                 if(people.user_id!==id && !friends(userFriends,peopleFriends) && !sentRequest(userFriends,peopleFriends) && !requested(userFriends,peopleFriends)){
-                    list.push(people)
+                    userInfo={
+                        ...people,
+                        friends:false,
+                        sentFriendRequests:false,
+                        requested:false,
+                    }
+                    list.push(userInfo)
                 }
             }
         }else{
+            var people;
             for(const userId of list){
-                listOfSuggestedPeople.push(await Profile.findOne({user_id:userId}))
-                list=[...listOfSuggestedPeople]
+                people=await Profile.findOne({user_id:userId})
+                listOfSuggestedPeople.push({
+                    _id:people._id,
+                    user_id:people.user_id,
+                    username:people.username,
+                    bio:people.bio,
+                    profilePicture:"",
+                    friends:false,
+                    sentFriendRequests:false,
+                    requested:false,
+                })
+                
             }
+            list=[...listOfSuggestedPeople]
         }
+        console.log(list)
         res.status(201).send({
             suggestedPeople:list
         })
