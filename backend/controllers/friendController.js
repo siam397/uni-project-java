@@ -113,9 +113,25 @@ exports.removeFriend=async (req,res)=>{
 
 exports.getRequests=async(req,res)=>{
     const id=req.body.ID;
+    console.log(id)
     try{
+        var userInfo;
+        var list=[];
         const requests=await Friends.findOne({user_id:id});
-        res.status(201).send(requests.friendRequests)
+        const jsonString = fs.readFileSync('./profilePictures.json')
+        var customer = JSON.parse(jsonString)
+        for(let i=0;i<requests.friendRequests.length;i++){
+            randomUser=requests.friendRequests[i]
+            userInfo={
+                user_id:randomUser.user_id,
+                username:randomUser.username,
+                bio:randomUser.bio,
+                profilePicture:customer[randomUser.user_id],
+            }
+            list.push(userInfo)
+        }
+
+        res.status(201).send(list)
     }catch(e){
         res.status(420).send(e)
     }

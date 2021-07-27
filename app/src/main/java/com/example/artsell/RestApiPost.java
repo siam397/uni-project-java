@@ -40,4 +40,6 @@ public interface RestApiPost {
     Call<ResponseBody>removeFriend(@Body FriendID friendID);
     @POST("removeRequest")
     Call<ResponseBody>removeRequest(@Body FriendID friendID);
+    @POST("getRequests")
+    Call<List<Profile>>getRequests(@Body UserID userID);
 }

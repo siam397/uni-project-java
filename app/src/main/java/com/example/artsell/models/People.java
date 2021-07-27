@@ -1,15 +1,23 @@
 package com.example.artsell.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class People {
-    List<User>suggestedPeople;
-    List<User>everyoneList;
-
-    public People(List<User> suggestedPeople, List<User> everyoneList) {
+    private List<User>suggestedPeople;
+    private List<User>everyoneList;
+    private int numberOfRequests;
+    public People(List<User> suggestedPeople, List<User> everyoneList, int numberOfRequests) {
         this.suggestedPeople = suggestedPeople;
         this.everyoneList = everyoneList;
+        this.numberOfRequests = numberOfRequests;
+    }
+
+    public int getNumberOfRequests() {
+        return numberOfRequests;
+    }
+
+    public void setNumberOfRequests(int numberOfRequests) {
+        this.numberOfRequests = numberOfRequests;
     }
 
     public List<User> getsuggestedPeople() {

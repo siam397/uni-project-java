@@ -170,9 +170,12 @@ exports.getUsers=async (req,res)=>{
         }
         listOfEveryone.push(userInfo)
     }
+    const requests=await Friends.findOne({user_id:id});
+
     res.status(201).send({
         suggestedPeople:list,
-        everyoneList:listOfEveryone
+        everyoneList:listOfEveryone,
+        numberOfRequests:requests.friendRequests.length
     })
 }
 
