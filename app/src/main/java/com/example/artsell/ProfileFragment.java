@@ -1,12 +1,17 @@
 package com.example.artsell;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -25,12 +30,15 @@ import com.example.artsell.models.UserID;
 import com.example.artsell.utilities.Variables;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +48,7 @@ import retrofit2.Retrofit;
 public class ProfileFragment extends Fragment{
     private Bitmap bitmap;
     private ImageView imageView;
+    private final int GALLERY_REQUEST=1;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -99,6 +108,26 @@ public class ProfileFragment extends Fragment{
 //        });
 
         imageView=view.findViewById(R.id.profile_image);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, GALLERY_REQUEST);
+                    }
+                    System.out.println("hello");
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, GALLERY_REQUEST);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         TextView username=view.findViewById(R.id.name);
         TextView bio=view.findViewById(R.id.bio);
         Button logout=view.findViewById(R.id.logout);
@@ -143,8 +172,10 @@ public class ProfileFragment extends Fragment{
         });
         return view;
     }
+
     public void changeDP(String id, Bitmap image){
         ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        imageView.setImageBitmap(image);
         image.compress(Bitmap.CompressFormat.JPEG,50,baos);
         String base64img=Base64.encodeToString(baos.toByteArray(),Base64.DEFAULT);
         Retrofit retrofit= Variables.initializeRetrofit();
@@ -166,5 +197,20 @@ public class ProfileFragment extends Fragment{
 
             }
         });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==GALLERY_REQUEST && resultCode==RESULT_OK){
+            try{
+                InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
+                Bitmap image = BitmapFactory.decodeStream(is);
+                SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+                String id = preferences.getString("user", "");
+                changeDP(id,image);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
