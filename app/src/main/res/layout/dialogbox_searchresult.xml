@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_add_user"
+        android:drawableLeft="@drawable/ic_wall_clock"
         android:text="Pending"
         android:fontFamily="@font/kievitotmedium"
         android:textAllCaps="false"
@@ -105,32 +105,31 @@
         android:background="@drawable/rounded_edittext"
         app:backgroundTint="#F4FA3A"
         />
+
     <Button
         android:id="@+id/chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/bio_dialogSearch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:drawableLeft="@drawable/ic_chaticon"
+        android:elevation="5dp"
+        android:fontFamily="@font/kievitotmedium"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_chaticon"
         android:text="Chat"
-        android:fontFamily="@font/kievitotmedium"
         android:textAllCaps="false"
         android:textColor="#363636"
         android:textSize="18dp"
-        android:elevation="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/bio_dialogSearch"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rounded_edittext"
-        app:backgroundTint="#F4FA3A"
-        />
+        app:backgroundTint="#F4FA3A" />
     <Button
         android:id="@+id/unfriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_chaticon"
         android:text="Unfriend"
         android:fontFamily="@font/kievitotmedium"
         android:textAllCaps="false"
@@ -141,7 +140,7 @@
         android:layout_below="@+id/bio_dialogSearch"
         android:layout_marginTop="95dp"
         android:background="@drawable/rounded_edittext"
-        app:backgroundTint="#F4FA3A"
+        app:backgroundTint="#ED3737"
         />
 
 

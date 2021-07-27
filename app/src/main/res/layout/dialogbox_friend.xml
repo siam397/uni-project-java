@@ -73,7 +73,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_chaticon"
         android:text="Unfriend"
         android:fontFamily="@font/kievitotmedium"
         android:textAllCaps="false"
@@ -83,8 +82,8 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/bio_dialogbox"
         android:layout_marginTop="90dp"
-        android:background="@color/black"
-        app:backgroundTint="#F4FA3A"
+        android:background="@drawable/rounded_edittext"
+        app:backgroundTint="#ED3737"
         />
 
 
