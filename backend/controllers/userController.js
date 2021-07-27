@@ -13,7 +13,7 @@ exports.login=async (req,res)=>{
             res.status(504).send("email doesnt exist")
         }else{
             try{
-                if(bcrypt.compare(req.body.password, user.password)){
+                if(await bcrypt.compare(req.body.password, user.password)){
                     res.send({
                         username:user.username,
                         email:user.email,
