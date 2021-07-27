@@ -235,8 +235,15 @@ requested=(mainUser,friend)=>{
 exports.updateProfilePicture=async (req,res)=>{
     const id=req.body.ID;
     const dp=req.body.DP;
-    const jsonString = fs.readFileSync('./profilePictures.json')
-    var customer = JSON.parse(jsonString)
-    customer[id]=dp
-    fs.writeFileSync('./profilePictures.json', JSON.stringify(customer))
+    try{
+        const jsonString = fs.readFileSync('./profilePictures.json')
+        var customer = JSON.parse(jsonString)
+        customer[id]=dp
+        fs.writeFileSync('./profilePictures.json', JSON.stringify(customer))
+        res.status(201).send({
+            response:"changedDP"
+        })
+    }catch(e){
+        res.status(501).send(e)
+    }
 }

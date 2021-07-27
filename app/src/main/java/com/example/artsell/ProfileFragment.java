@@ -3,17 +3,34 @@ package com.example.artsell;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.artsell.models.Profile;
+import com.example.artsell.models.ProfilePicture;
+import com.example.artsell.models.ResponseBody;
+import com.example.artsell.models.UserID;
+import com.example.artsell.utilities.Variables;
+
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +38,8 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment{
-
+    private Bitmap bitmap;
+    private ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,20 +85,86 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_profile,container,false);
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor=sharedPreferences.edit();
+//                editor.clear();
+//                editor.putString("user","");
+//                editor.apply();
+//                Intent intent=new Intent(Objects.requireNonNull(getContext()),LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        imageView=view.findViewById(R.id.profile_image);
+        TextView username=view.findViewById(R.id.name);
+        TextView bio=view.findViewById(R.id.bio);
         Button logout=view.findViewById(R.id.logout);
+        SharedPreferences sharedPreferences=getContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        String id=sharedPreferences.getString("user","");
+        Retrofit retrofit= Variables.initializeRetrofit();
+        RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+        UserID userID=new UserID(id);
+        Call<Profile> call=restApiPost.getProfileInfo(userID);
+        call.enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                if(!response.isSuccessful()){
+                    System.out.println(response.errorBody().toString());
+                    return;
+                }
+                String profilePic=response.body().getProfilePicture();
+                byte[] imageBytes = Base64.decode(profilePic, Base64.DEFAULT);
+                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                imageView.setImageBitmap(decodedImage);
+                username.setText(response.body().getUsername());
+                bio.setText(response.body().getBio());
+
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences= Objects.requireNonNull(getActivity()).getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences= getContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.clear();
                 editor.putString("user","");
                 editor.apply();
-                Intent intent=new Intent(Objects.requireNonNull(getContext()),LoginActivity.class);
+                Intent intent=new Intent(getContext(),LoginActivity.class);
                 startActivity(intent);
             }
         });
-        // Inflate the layout for this fragment
         return view;
+    }
+    public void changeDP(String id, Bitmap image){
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG,50,baos);
+        String base64img=Base64.encodeToString(baos.toByteArray(),Base64.DEFAULT);
+        Retrofit retrofit= Variables.initializeRetrofit();
+        RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+        ProfilePicture profilePicture=new ProfilePicture(id,base64img);
+        Call<ResponseBody> call=restApiPost.changeDP(profilePicture);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(!response.isSuccessful()){
+                    System.out.println("Something went wrong");
+                    return;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }
