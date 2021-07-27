@@ -20,7 +20,6 @@
         tools:targetApi="n">
 
 
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".ChatActivity"/>
         <activity android:name=".ChatRoomActivity" />
         <activity android:name=".LoginActivity" />

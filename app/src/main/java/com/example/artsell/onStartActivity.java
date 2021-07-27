@@ -26,9 +26,13 @@ public class onStartActivity extends AppCompatActivity {
                 if(userInfo.equals("")){
                     Intent intent=new Intent(onStartActivity.this,LoginActivity.class);
                     startActivity(intent);
+
+                    finish();
                 }else{
                     Intent intent=new Intent(onStartActivity.this,LandingPageActivity.class);
                     startActivity(intent);
+
+                    finish();
                 }
 
 
@@ -36,5 +40,6 @@ public class onStartActivity extends AppCompatActivity {
             }
 
         }, 1000);
+
     }
 }
