@@ -9,77 +9,98 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="588dp"
-        android:layout_above="@id/editmessage" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/editmessage"
+        android:layout_below="@+id/profile_image"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="8dp" />
 
     <EditText
         android:id="@+id/editmessage"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="103dp"
-        android:layout_marginRight="103dp"
-        android:layout_marginBottom="22dp"
+        android:layout_height="50dp"
         android:background="@drawable/shadow_edittext"
-        android:ems="10"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="20dp"
+
+        android:ems="12"
+        android:fontFamily="@font/kievitotregular"
         android:hint="Message"
         android:inputType="textPersonName"
-        android:padding="20dp" />
+
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"/>
+
+
 
     <ImageView
         android:id="@+id/sendImage"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
-        android:layout_marginBottom="31dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+
         app:srcCompat="@android:drawable/ic_menu_gallery"
         app:tint="@color/design_default_color_primary" />
+
 
     <Button
         android:id="@+id/sendButton"
         android:visibility="invisible"
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
+
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="14dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginBottom="28dp"
-        android:text="Send" />
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+
+        android:backgroundTint="@color/DiscoverColor"
+        android:textColor="@color/TextFont"
+        android:fontFamily="@font/kievitotblack"
+        android:textSize="9dp"
+        android:text="Send"
+         />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="351dp"
-        android:layout_marginBottom="689dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="12dp"
+
         android:src="@drawable/stalin"
         app:civ_border_color="#FFFFFF"
-        app:civ_border_width="4dp" />
+        app:civ_border_width="0dp" />
 
     <TextView
         android:id="@+id/friend_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+
+        android:layout_marginTop="26dp"
+        android:layout_toEndOf="@+id/profile_image"
         android:layout_toRightOf="@id/profile_image"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="71dp"
-        android:layout_marginBottom="693dp"
         android:fontFamily="@font/kievitotextrabold"
-        android:gravity="center_vertical"
-        android:text="hmmmmm"
+        android:text="Rahim Rahman"
         android:textColor="@color/black"
         android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:elevation="4dp"/>
 
 </RelativeLayout>
