@@ -96,19 +96,23 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                               Button sentRequest=myDialog.findViewById(R.id.sentRequest);
                                                               Button request=myDialog.findViewById(R.id.request);
                                                               Button chat=myDialog.findViewById(R.id.chat);
+                                                              Button unfriend=myDialog.findViewById(R.id.unfriend);
                                                               if(mData.get(vHolder.getAdapterPosition()).isFriends()){
                                                                   sentRequest.setVisibility(View.INVISIBLE);
                                                                   request.setVisibility(View.INVISIBLE);
                                                                   addFriend.setVisibility(View.INVISIBLE);
                                                                   chat.setVisibility(View.VISIBLE);
+                                                                  unfriend.setVisibility(View.VISIBLE);
                                                               }if(mData.get(vHolder.getAdapterPosition()).isSentFriendRequests()){
                                                                   request.setVisibility(View.INVISIBLE);
                                                                   addFriend.setVisibility(View.INVISIBLE);
                                                                   chat.setVisibility(View.INVISIBLE);
+                                                                  unfriend.setVisibility(View.INVISIBLE);
                                                                   sentRequest.setVisibility(View.VISIBLE);
                                                               }if(mData.get(vHolder.getAdapterPosition()).isRequested()){
                                                                   addFriend.setVisibility(View.INVISIBLE);
                                                                   chat.setVisibility(View.INVISIBLE);
+                                                                  unfriend.setVisibility(View.INVISIBLE);
                                                                   sentRequest.setVisibility(View.INVISIBLE);
                                                                   request.setVisibility(View.VISIBLE);
                                                               }if(!mData.get(vHolder.getAdapterPosition()).isRequested() &&
@@ -116,6 +120,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                       !mData.get(vHolder.getAdapterPosition()).isFriends()
                                                               ){
                                                                   chat.setVisibility(View.INVISIBLE);
+                                                                  unfriend.setVisibility(View.INVISIBLE);
                                                                   sentRequest.setVisibility(View.INVISIBLE);
                                                                   request.setVisibility(View.INVISIBLE);
                                                                   addFriend.setVisibility(View.VISIBLE);
@@ -125,6 +130,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                   request.setVisibility(View.INVISIBLE);
                                                                   addFriend.setVisibility(View.INVISIBLE);
                                                                   chat.setVisibility(View.INVISIBLE);
+                                                                  unfriend.setVisibility(View.INVISIBLE);
                                                               }
 
                                                               addFriend.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +146,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                               request.setVisibility(View.INVISIBLE);
                                                                               addFriend.setVisibility(View.INVISIBLE);
                                                                               chat.setVisibility(View.INVISIBLE);
+                                                                              unfriend.setVisibility(View.INVISIBLE);
                                                                               sentRequest.setVisibility(View.VISIBLE);
                                                                           }
 
@@ -162,6 +169,36 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                               request.setVisibility(View.INVISIBLE);
                                                                               addFriend.setVisibility(View.INVISIBLE);
                                                                               chat.setVisibility(View.VISIBLE);
+                                                                              unfriend.setVisibility(View.VISIBLE);
+                                                                              sentRequest.setVisibility(View.INVISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              unfriend.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+                                                                      String id = sharedPreferences.getString("user", "");
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.removeFriend(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              if(!response.isSuccessful()){
+                                                                                  System.out.println("something went wrong");
+                                                                                  return;
+                                                                              }
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.VISIBLE);
+                                                                              chat.setVisibility(View.INVISIBLE);
+                                                                              unfriend.setVisibility(View.INVISIBLE);
                                                                               sentRequest.setVisibility(View.INVISIBLE);
                                                                           }
 
@@ -184,6 +221,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                                               request.setVisibility(View.INVISIBLE);
                                                                               addFriend.setVisibility(View.VISIBLE);
                                                                               chat.setVisibility(View.INVISIBLE);
+                                                                              unfriend.setVisibility(View.INVISIBLE);
                                                                               sentRequest.setVisibility(View.INVISIBLE);
                                                                           }
 
