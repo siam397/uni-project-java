@@ -1,19 +1,30 @@
 package com.example.artsell;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.artsell.models.Profile;
 import com.example.artsell.models.SearchResult;
+import com.example.artsell.models.UserID;
+import com.example.artsell.utilities.Variables;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,10 +98,33 @@ public class RequestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_request, container,  false);
-        myRecyclerView = (RecyclerView) v.findViewById(R.id.request_recyclerview);
-        RequestRecyclerAdapter recyclerViewAdapter = new RequestRecyclerAdapter(getContext(),listRequest);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myRecyclerView.setAdapter(recyclerViewAdapter);
+        SharedPreferences preferences = getActivity().getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+        String id = preferences.getString("user", "");
+        Retrofit retrofit= Variables.initializeRetrofit();
+        RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+        UserID userID=new UserID(id);
+        Call<List<Profile>> call=restApiPost.getRequests(userID);
+        call.enqueue(new Callback<List<Profile>>() {
+            @Override
+            public void onResponse(Call<List<Profile>> call, Response<List<Profile>> response) {
+                if(!response.isSuccessful()){
+                    System.out.println("Something went wrong");
+                    return;
+                }
+                List<Profile>requests=response.body();
+                myRecyclerView = (RecyclerView) v.findViewById(R.id.request_recyclerview);
+                RequestRecyclerAdapter recyclerViewAdapter = new RequestRecyclerAdapter(getContext(),requests);
+                myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                myRecyclerView.setAdapter(recyclerViewAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Profile>> call, Throwable t) {
+
+            }
+        });
+
 
         return v;
     }

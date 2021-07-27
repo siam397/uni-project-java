@@ -57,7 +57,6 @@ public class DiscoverFragment extends Fragment {
     private EditText searchBar;
 
     // Notification Count
-    public int notificationCount=69;
     private TextView countString;
 
     // Button
@@ -137,11 +136,20 @@ public class DiscoverFragment extends Fragment {
                     System.out.println("hoilo na re");
                     return;
                 }
+                int notificationCount=response.body().getNumberOfRequests();
+                countString=getView().findViewById(R.id.notificationNumber);
+                countString.setText(String.format("%02d", notificationCount));
+                if (!(notificationCount>0)){
+                    countString.setVisibility(View.GONE);
+                }else{
+                    countString.setVisibility(View.VISIBLE);
+                }
                 System.out.println(response.body().geteveryoneList().get(0).getUsername());
                 myRecyclerView = (RecyclerView) v.findViewById(R.id.discover_recyclerview);
                 SearchRecyclerViewAdapter recyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),response.body().getsuggestedPeople(),response.body().geteveryoneList());
                 myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 linlaHeaderProgress.setVisibility(View.INVISIBLE);
+
                 myRecyclerView.setAdapter(recyclerViewAdapter);
 
                 // SEARCH BAR
@@ -181,13 +189,7 @@ public class DiscoverFragment extends Fragment {
 //        });
 
         //Notification badge activity
-        countString = (TextView) v.findViewById(R.id.notificationNumber);
-        countString.setText(""+notificationCount);
-        if (!(notificationCount>0)){
-            countString.setVisibility(View.GONE);
-        }else{
-            countString.setVisibility(View.VISIBLE);
-        }
+
 
         //Notification Button
         notificationBtn = (ImageView) v.findViewById(R.id.bell_icon);

@@ -75,7 +75,7 @@
         android:fontFamily="@font/kievitotbold"
         android:gravity="center"
         android:padding="3dp"
-        android:text="12"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/TextFont"
         android:textSize="15sp" />
