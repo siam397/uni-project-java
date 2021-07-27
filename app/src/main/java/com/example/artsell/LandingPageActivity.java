@@ -3,11 +3,14 @@ package com.example.artsell;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -22,7 +25,7 @@ public class LandingPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landing_page);
 
         //Appbar Font Color
-        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + getString(R.string.app_name) + "</font>"));
+//        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + getString(R.string.app_name) + "</font>"));
 
         bottomNav = findViewById(R.id.bottomNavbar);
 
@@ -58,8 +61,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
                 if (fragment != null) {
                     fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
+                    fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment)
                             .commit();
                 }
             }

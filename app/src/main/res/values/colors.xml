@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bgGray">#F5F5F5</color>
+
+    <color name="TextFont">#363636</color>
+
+<!--    <color name="ChatColor">#95CEFB</color>-->
+<!--    <color name="FriendColor">#FFB47B</color>-->
+<!--    <color name="DiscoverColor">#FFEB3B</color>-->
+<!--    <color name="ProfileColor">#A5FF95</color>-->
+    <color name="ChatColor">#FFEB3B</color>
+    <color name="FriendColor">#FFEB3B</color>
+    <color name="DiscoverColor">#FFEB3B</color>
+    <color name="ProfileColor">#FFEB3B</color>
 </resources>

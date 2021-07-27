@@ -1,5 +1,6 @@
 package com.example.artsell;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import android.widget.LinearLayout;
+
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +31,13 @@ import com.example.artsell.models.Chatx;
 import com.example.artsell.models.People;
 import com.example.artsell.models.Profile;
 import com.example.artsell.models.SearchResult;
+
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+
 import com.example.artsell.models.User;
 import com.example.artsell.models.UserID;
 import com.example.artsell.utilities.Variables;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +56,12 @@ public class DiscoverFragment extends Fragment {
     private List<SearchResult> listSearchResult;
     private EditText searchBar;
 
+    // Notification Count
+    public int notificationCount=69;
+    private TextView countString;
 
+    // Button
+    private ImageView notificationBtn;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -163,7 +180,30 @@ public class DiscoverFragment extends Fragment {
 //            }
 //        });
 
+        //Notification badge activity
+        countString = (TextView) v.findViewById(R.id.notificationNumber);
+        countString.setText(""+notificationCount);
+        if (!(notificationCount>0)){
+            countString.setVisibility(View.GONE);
+        }else{
+            countString.setVisibility(View.VISIBLE);
+        }
 
+        //Notification Button
+        notificationBtn = (ImageView) v.findViewById(R.id.bell_icon);
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestFragment requestFragment = new RequestFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.activityLanding, requestFragment);
+                transaction.addToBackStack(null).commit();
+            }
+        });
         return v;
     }
+
+
+
+
 }
