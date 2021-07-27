@@ -137,15 +137,15 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     public class aViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout item_search_result;
-        private TextView tv_name;
         private TextView tv_bio;
+        private TextView tv_name;
         private ImageView img;
 
         public aViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_name = (TextView) itemView.findViewById(R.id.name_search_result);
             tv_bio = (TextView) itemView.findViewById(R.id.bio_search_result);
+            tv_name = (TextView) itemView.findViewById(R.id.name_search_result);
             img = (ImageView) itemView.findViewById(R.id.dp_search_result);
             item_search_result = (RelativeLayout) itemView.findViewById(R.id.search_item_id);
             //.......
