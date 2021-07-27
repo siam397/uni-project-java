@@ -139,8 +139,8 @@ public class DiscoverFragment extends Fragment {
                 int notificationCount=response.body().getNumberOfRequests();
                 countString=getView().findViewById(R.id.notificationNumber);
                 countString.setText(String.format("%02d", notificationCount));
-                if (!(notificationCount>0)){
-                    countString.setVisibility(View.GONE);
+                if (notificationCount==0 || countString.getText().equals("0")){
+                    countString.setVisibility(View.INVISIBLE);
                 }else{
                     countString.setVisibility(View.VISIBLE);
                 }

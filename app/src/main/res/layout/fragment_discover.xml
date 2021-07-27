@@ -75,7 +75,8 @@
         android:fontFamily="@font/kievitotbold"
         android:gravity="center"
         android:padding="3dp"
-        android:text=""
+        android:text="0"
+        android:visibility="invisible"
         android:textAlignment="center"
         android:textColor="@color/TextFont"
         android:textSize="15sp" />
