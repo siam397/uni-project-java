@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.artsell.models.GetUser;
 import com.example.artsell.models.LoginUser;
@@ -77,10 +78,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<GetUser> call, Response<GetUser> response) {
                         if(!response.isSuccessful()){
-                            Log.i("TAG", "onResponse:hoy nai ");
+                            Toast myToast = Toast.makeText(getBaseContext(), "Wrong email or password", Toast.LENGTH_LONG);
+                            myToast.show();
                             return;
                         }
-                        int statusCode=response.code();
+
                         SharedPreferences sharedPreferences=getBaseContext().getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.clear();

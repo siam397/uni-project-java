@@ -109,19 +109,25 @@ public class ChatFragment extends Fragment {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
-                List<Chatx> chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                List<Chatx> chatxList=new ArrayList<>();
+                if(!dataSnapshot.getValue().equals("created")){
+                    System.out.println("here i am");
+                    GenericTypeIndicator<List<Chatx>>genericTypeIndicator=new GenericTypeIndicator<List<Chatx>>() {};
+                    chatxList=dataSnapshot.getValue(genericTypeIndicator);
+                }
                 ChatRecyclerViewAdapter mAdapter=new ChatRecyclerViewAdapter(getContext(),chatxList);
                 myRecyclerView.setAdapter(mAdapter);
+                List<Chatx> finalChatxList = chatxList;
+                List<Chatx> finalChatxList1 = chatxList;
                 mAdapter.setOnItemClickListener(new ChatRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
 //                        changeItem(position, "Clicked");
                         Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("id",chatxList.get(position).getId());
-                        intent.putExtra("username",chatxList.get(position).getToPerson());
-                        intent.putExtra("profilePicture",chatxList.get(position).getProfilePicture());
+                        intent.putExtra("id", finalChatxList1.get(position).getId());
+                        intent.putExtra("username", finalChatxList1.get(position).getToPerson());
+                        intent.putExtra("profilePicture", finalChatxList1.get(position).getProfilePicture());
                         getActivity().getBaseContext().startActivity(intent);
 
                     }

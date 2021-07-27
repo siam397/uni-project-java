@@ -9,7 +9,7 @@ exports.login=async (req,res)=>{
     const email=req.body.email;
     const password=req.body.password;
     User.findOne({email:email},async (err,user)=>{
-        if(user.length==0){
+        if(!user){
             res.status(504).send("email doesnt exist")
         }else{
             try{
@@ -20,7 +20,7 @@ exports.login=async (req,res)=>{
                         _id:user._id
                     })
                 }else{
-                    res.status(504).send("password mismatch")
+                    res.status(404).send("password mismatch")
                 }
             }catch{
                 res.status(500).send("something went wrong")

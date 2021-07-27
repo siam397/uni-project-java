@@ -1,14 +1,18 @@
 package com.example.artsell;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +26,42 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artsell.models.Chatx;
+import com.example.artsell.models.FriendID;
+import com.example.artsell.models.GetFriends;
+import com.example.artsell.models.People;
+import com.example.artsell.models.Profile;
+import com.example.artsell.models.ResponseBody;
 import com.example.artsell.models.SearchResult;
+import com.example.artsell.models.User;
+import com.example.artsell.models.UserID;
+import com.example.artsell.utilities.Variables;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.aViewHolder> {
 
     Context mContext;
-    List<SearchResult> mData;
-    List<SearchResult> mDataCopy;
+    List<User> mData;
+    List<User> mDataCopy;
     //    OnItemClickListener onItemClickListener;
     Dialog myDialog;
+    List<User>xxx;
+    Retrofit retrofit= Variables.initializeRetrofit();
 
-    public SearchRecyclerViewAdapter(Context mContext, List<SearchResult> mData) {
+    public SearchRecyclerViewAdapter(Context mContext, List<User> mData, List<User>mDataCopy) {
         this.mContext = mContext;
         this.mData = mData;
-        this.mDataCopy = new ArrayList<>();
-        mDataCopy.addAll(mData);
+        this.mDataCopy = mDataCopy;
+        this.xxx = new ArrayList<>();
+        xxx.addAll(mData);
     }
 
 
@@ -65,22 +87,123 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                                                               ImageView dialog_dp = (ImageView) myDialog.findViewById(R.id.dp_dialogSearch);
                                                               dialog_name.setText(mData.get(vHolder.getAdapterPosition()).getUsername());
                                                               dialog_bio.setText(mData.get(vHolder.getAdapterPosition()).getBio());
-                                                              dialog_dp.setImageResource(mData.get(vHolder.getAdapterPosition()).getProfilePicture());
-//                byte[] image= Base64.decode(mData.get(vHolder.getAdapterPosition()).getProfilePicture(),Base64.DEFAULT);
-//                Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
-//
-//                dialog_dp.setImageBitmap(bitmap);
-                                                              Button btn = myDialog.findViewById(R.id.btn_dialogSearch);
-                                                              btn.setOnClickListener(new View.OnClickListener() {
+                                                              byte[] image= Base64.decode(mData.get(vHolder.getAdapterPosition()).getProfilePicture(),Base64.DEFAULT);
+                                                              Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+                                                              dialog_dp.setImageBitmap(bitmap);
+                                                              SharedPreferences sharedPreferences=mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);//Frequent to get SharedPreferences need to add a step getActivity () method
+                                                              String id = sharedPreferences.getString("user", "");
+                                                              Button addFriend=myDialog.findViewById(R.id.btn_dialogSearch);
+                                                              Button sentRequest=myDialog.findViewById(R.id.sentRequest);
+                                                              Button request=myDialog.findViewById(R.id.request);
+                                                              Button chat=myDialog.findViewById(R.id.chat);
+                                                              if(mData.get(vHolder.getAdapterPosition()).isFriends()){
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.VISIBLE);
+                                                              }if(mData.get(vHolder.getAdapterPosition()).isSentFriendRequests()){
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.VISIBLE);
+                                                              }if(mData.get(vHolder.getAdapterPosition()).isRequested()){
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.VISIBLE);
+                                                              }if(!mData.get(vHolder.getAdapterPosition()).isRequested() &&
+                                                                !mData.get(vHolder.getAdapterPosition()).isSentFriendRequests() &&
+                                                                      !mData.get(vHolder.getAdapterPosition()).isFriends()
+                                                              ){
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.VISIBLE);
+                                                              }
+                                                              if(id.equals(mData.get(vHolder.getAdapterPosition()).getUser_id())){
+                                                                  sentRequest.setVisibility(View.INVISIBLE);
+                                                                  request.setVisibility(View.INVISIBLE);
+                                                                  addFriend.setVisibility(View.INVISIBLE);
+                                                                  chat.setVisibility(View.INVISIBLE);
+                                                              }
+
+                                                              addFriend.setOnClickListener(new View.OnClickListener() {
                                                                   @Override
                                                                   public void onClick(View v) {
-                                                                      Intent intent = new Intent(mContext, ChatRoomActivity.class);
-                                                                      intent.putExtra("id", mData.get(vHolder.getAdapterPosition()).getUser_id());
-                                                                      intent.putExtra("username", mData.get(vHolder.getAdapterPosition()).getUsername());
+
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.sendRequest(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.INVISIBLE);
+                                                                              chat.setVisibility(View.INVISIBLE);
+                                                                              sentRequest.setVisibility(View.VISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              request.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.addFriend(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.INVISIBLE);
+                                                                              chat.setVisibility(View.VISIBLE);
+                                                                              sentRequest.setVisibility(View.INVISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              sentRequest.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      RestApiPost restApiPost=retrofit.create(RestApiPost.class);
+                                                                      FriendID friendID=new FriendID(id,mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      Call<ResponseBody> call=restApiPost.removeRequest(friendID);
+                                                                      call.enqueue(new Callback<ResponseBody>() {
+                                                                          @Override
+                                                                          public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                              request.setVisibility(View.INVISIBLE);
+                                                                              addFriend.setVisibility(View.VISIBLE);
+                                                                              chat.setVisibility(View.INVISIBLE);
+                                                                              sentRequest.setVisibility(View.INVISIBLE);
+                                                                          }
+
+                                                                          @Override
+                                                                          public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                                          }
+                                                                      });
+                                                                  }
+                                                              });
+                                                              chat.setOnClickListener(new View.OnClickListener() {
+                                                                  @Override
+                                                                  public void onClick(View v) {
+                                                                      Intent intent=new Intent(mContext,ChatRoomActivity.class);
+                                                                      intent.putExtra("id",mData.get(vHolder.getAdapterPosition()).getUser_id());
+                                                                      intent.putExtra("username",mData.get(vHolder.getAdapterPosition()).getUsername());
+                                                                      intent.putExtra("profilePicture",mData.get(vHolder.getAdapterPosition()).getProfilePicture());
                                                                       mContext.startActivity(intent);
                                                                   }
                                                               });
-//                Toast.makeText(mContext, "Test Click"+String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
                                                               myDialog.show();
                                                           }
                                                       }
@@ -95,7 +218,9 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public void onBindViewHolder(@NonNull SearchRecyclerViewAdapter.aViewHolder holder, int position) {
         holder.tv_name.setText(mData.get(position).getUsername());
         holder.tv_bio.setText(mData.get(position).getBio());
-        holder.img.setImageResource(mData.get(position).getProfilePicture());
+        byte[] image=Base64.decode(mData.get(position).getProfilePicture(),Base64.DEFAULT);
+        Bitmap bitmap=BitmapFactory.decodeByteArray(image,0,image.length);
+        holder.img.setImageBitmap(bitmap);
     }
 
     @Override
@@ -105,17 +230,16 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
 
     public void filter(CharSequence charSequence) {
-        List<SearchResult> tempArrayList = new ArrayList<>();
+        List<User> tempArrayList = new ArrayList<>();
         if (!TextUtils.isEmpty(charSequence)) {
-            for (SearchResult searchResult : mData) {
-                if (searchResult.getUsername().toLowerCase().contains(charSequence)) {
-                    tempArrayList.add(searchResult);
+            for (User profile : mDataCopy) {
+                if (profile.getUsername().toLowerCase().contains(charSequence)) {
+                    tempArrayList.add(profile);
                 }
             }
         } else {
-            tempArrayList.addAll(mDataCopy);
+            tempArrayList.addAll(xxx);
         }
-
         mData.clear();
         mData.addAll(tempArrayList);
         notifyDataSetChanged();

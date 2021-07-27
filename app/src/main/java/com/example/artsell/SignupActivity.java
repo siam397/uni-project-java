@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.artsell.models.GetUser;
 import com.example.artsell.models.SignUser;
@@ -62,6 +63,8 @@ public class SignupActivity extends AppCompatActivity {
                     public void onResponse(Call<GetUser> call, Response<GetUser> response) {
                         if(!response.isSuccessful()){
                             try {
+                                Toast myToast = Toast.makeText(getBaseContext(), "Email already used", Toast.LENGTH_LONG);
+                                myToast.show();
                                 System.out.println(response.errorBody().string());
                             } catch (IOException e) {
                                 e.printStackTrace();
