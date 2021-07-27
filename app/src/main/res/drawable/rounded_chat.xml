@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  res/drawable/rounded_edittext.xml -->
+<!--  res/drawable/rounded_chat.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle"
     android:padding="10dp">
 
-    <solid android:color="@color/DiscoverColor" />
+    <solid android:color="#FDEC55" />
 
     <corners
         android:bottomRightRadius="45dp"
@@ -12,3 +12,7 @@
         android:topLeftRadius="45dp"
         android:topRightRadius="45dp" />
 </shape>
+
+
+
+
